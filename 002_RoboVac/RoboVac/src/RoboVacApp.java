@@ -15,7 +15,6 @@ public class RoboVacApp {
         myRoboVac.setMoveBehaviour(new roboVac.MoveVerticalFirst());
         myRoboVac.setPosition(1, 1);
         myRoboVac.clean();
-        myRoboVac.setPosition(1, 1);
         myRoboVac.clean();
     }
 }

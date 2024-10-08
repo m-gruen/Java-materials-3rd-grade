@@ -2,46 +2,53 @@ package roboVac;
 
 public class MoveVerticalFirst implements MoveBehaviour {
 
-    private int dirX;
-    private int dirY;
-    private char nextDirectionVertical;
-    private char currentDirectionHorizontal;
+    private Direction currentDirection;
+    private Direction verticalDirection;
+    private Direction horizontalDirection;
     private boolean lastMoveWasVertical;
-
-    private static final int[][] DIRECTIONS = {
-            // X, Y
-            { 0, -1 }, // North
-            { 1, 0 }, // East
-            { 0, 1 }, // South
-            { -1, 0 } // West
-    };
 
     @Override
     public void init() {
-        nextDirectionVertical = 'N';
-        currentDirectionHorizontal = 'E';
-        lastMoveWasVertical = false;
-
-        dirX = DIRECTIONS[2][0];
-        dirY = DIRECTIONS[2][1];
+        verticalDirection = Direction.SOUTH;
+        horizontalDirection = Direction.WEST;
+        currentDirection = verticalDirection;
+        lastMoveWasVertical = true;
     }
 
     @Override
     public void move(RoboVac roboVac) {
         Room room = roboVac.getRoom();
-
         int newPosX, newPosY;
+
         do {
-            if (lastMoveWasVertical) {
-            }
-            newPosX = room.getRobotPosX() + dirX;
-            newPosY = room.getRobotPosY() + dirY;
+            newPosX = room.getRobotPosX() + currentDirection.x;
+            newPosY = room.getRobotPosY() + currentDirection.y;
 
             if (room.getStatus(newPosX, newPosY) == Status.WALL) {
+                switchDirection();
+            } else if (!lastMoveWasVertical) {
+                switchToVertical();
             }
         } while (room.getStatus(newPosX, newPosY) == Status.WALL);
 
         room.setRobot(newPosX, newPosY);
     }
 
+    private void switchDirection() {
+        if (lastMoveWasVertical) {
+            currentDirection = horizontalDirection;
+            lastMoveWasVertical = false;
+        } else {
+            horizontalDirection = (horizontalDirection == Direction.WEST) ? Direction.EAST : Direction.WEST;
+            currentDirection = verticalDirection;
+            lastMoveWasVertical = true;
+        }
+    }
+
+    private void switchToVertical() {
+        horizontalDirection = currentDirection;
+        verticalDirection = (verticalDirection == Direction.SOUTH) ? Direction.NORTH : Direction.SOUTH;
+        currentDirection = verticalDirection;
+        lastMoveWasVertical = true;
+    }
 }

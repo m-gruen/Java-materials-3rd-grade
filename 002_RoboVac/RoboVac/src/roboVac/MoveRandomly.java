@@ -4,24 +4,14 @@ import java.util.Random;
 
 public class MoveRandomly implements MoveBehaviour {
 
-    private int dirX;
-    private int dirY;
-
-    private static final int[][] DIRECTIONS = {
-            // X, Y
-            { 0, -1 }, // North
-            { 1, 0 }, // East
-            { 0, 1 }, // South
-            { -1, 0 } // West
-    };
+    private Direction currentDirection;
 
     @Override
     public void init() {
-        // choose dir randomly
+        // choose new random direction
         Random rand = new Random();
-        int dir = rand.nextInt(0, DIRECTIONS.length);
-        dirX = DIRECTIONS[dir][0];
-        dirY = DIRECTIONS[dir][1];
+        Direction[] directions = Direction.values();
+        currentDirection = directions[rand.nextInt(directions.length)];
     }
 
     @Override
@@ -31,10 +21,10 @@ public class MoveRandomly implements MoveBehaviour {
         int newPosX, newPosY;
 
         do {
-            newPosX = room.getRobotPosX() + dirX;
-            newPosY = room.getRobotPosY() + dirY;
+            newPosX = room.getRobotPosX() + currentDirection.x;
+            newPosY = room.getRobotPosY() + currentDirection.y;
 
-            if (room.getStatus(newPosX, newPosY) == Status.WALL || new Random().nextInt(0, 4) == 0) {
+            if (room.getStatus(newPosX, newPosY) == Status.WALL || new Random().nextInt(4) == 0) {
                 init();
             }
         } while (room.getStatus(newPosX, newPosY) == Status.WALL);

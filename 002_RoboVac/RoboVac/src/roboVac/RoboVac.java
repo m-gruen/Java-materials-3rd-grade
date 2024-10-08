@@ -46,8 +46,8 @@ public class RoboVac {
         room.setAllDirty();
         moveBehaviour.init();
         do {
-            printRoomStatus();
             room.setCleanAtRobotPosition();
+            printRoomStatus();
             moveBehaviour.move(this);
         } while (!room.isClean());
 
