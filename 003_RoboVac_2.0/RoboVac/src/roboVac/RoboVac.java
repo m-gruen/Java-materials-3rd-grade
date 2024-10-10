@@ -44,14 +44,20 @@ public class RoboVac {
 
     public void clean() {
         room.setAllDirty();
+        room.setCleanAtRobotPosition();
         moveBehaviour.init();
-        do {
-            room.setCleanAtRobotPosition();
+        
+        int moveCount = 0; 
+        while (!room.isClean()) {
             printRoomStatus();
             moveBehaviour.move(this);
-        } while (!room.isClean());
-
+            room.setCleanAtRobotPosition();
+            moveCount++;
+        }
+    
+        printRoomStatus();
         System.out.println("Room is clean!");
+        System.out.println("Total moves: " + moveCount);
     }
 
 }
