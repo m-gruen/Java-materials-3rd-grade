@@ -1,20 +1,23 @@
-import roboVac.RoboVac;
-import roboVac.Room;
+import roboVac.*;
 
 public class RoboVacApp {
     public static void main(String[] args) {
         var myRoboVac = new RoboVac("RoboVac EG");
         var myRoom = new Room(new String[] {
-                "######",
-                "#    #",
-                "#    #",
-                "#    #",
-                "######"
+                "############",
+                "#          #",
+                "#          #",
+                "#    ####  #",
+                "#    #  #  #",
+                "#    #     #",
+                "#    #     #",
+                "############"
         });
         myRoboVac.setRoom(myRoom);
-        myRoboVac.setMoveBehaviour(new roboVac.MoveVerticalFirst());
-        myRoboVac.setPosition(1, 1);
+        myRoboVac.setPosition(new Position(1, 1));
         myRoboVac.clean();
         myRoboVac.clean();
+
     }
+
 }

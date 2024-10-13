@@ -6,6 +6,11 @@ public class MoveVerticalFirst implements MoveBehaviour {
     private Direction verticalDirection;
     private Direction horizontalDirection;
     private boolean lastMoveWasVertical;
+    private RoboVac roboVac;
+
+    public MoveVerticalFirst(RoboVac roboVac) {
+        this.roboVac = roboVac;
+    }
 
     @Override
     public void init() {
@@ -16,22 +21,24 @@ public class MoveVerticalFirst implements MoveBehaviour {
     }
 
     @Override
-    public void move(RoboVac roboVac) {
+    public Position getNextMove() {
         Room room = roboVac.getRoom();
-        int newPosX, newPosY;
+
+        Position newPos;
 
         do {
-            newPosX = room.getRobotPosX() + currentDirection.x;
-            newPosY = room.getRobotPosY() + currentDirection.y;
+            newPos = new Position(
+                    roboVac.getRoom().getRobotPosition().x + currentDirection.x,
+                    roboVac.getRoom().getRobotPosition().y + currentDirection.y);
 
-            if (room.getStatus(newPosX, newPosY) == Status.WALL) {
+            if (!room.isAccessible(newPos)) {
                 switchDirection();
             } else if (!lastMoveWasVertical) {
                 switchToVertical();
             }
-        } while (room.getStatus(newPosX, newPosY) == Status.WALL);
+        } while (!room.isAccessible(newPos));
 
-        room.setRobot(newPosX, newPosY);
+        return newPos;
     }
 
     private void switchDirection() {
@@ -51,4 +58,5 @@ public class MoveVerticalFirst implements MoveBehaviour {
         currentDirection = verticalDirection;
         lastMoveWasVertical = true;
     }
+
 }

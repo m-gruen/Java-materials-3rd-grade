@@ -4,6 +4,7 @@ public class RoboVac {
 
     private String name;
     private Room room;
+    private int moveCount;
     private MoveBehaviour moveBehaviour;
 
     public RoboVac(String name) {
@@ -34,30 +35,62 @@ public class RoboVac {
         this.room = room;
     }
 
-    public void setPosition(int posX, int posY) {
-        room.setRobot(posX, posY);
-    }
-
-    public void printRoomStatus() {
-        System.out.println(room);
+    public void setPosition(Position pos) {
+        room.setRobotPosition(pos);
     }
 
     public void clean() {
+
+        resetMoveCount();
         room.setAllDirty();
         room.setCleanAtRobotPosition();
+        moveBehaviour = new MoveVerticalFirst(this);
         moveBehaviour.init();
-        
-        int moveCount = 0; 
+
         while (!room.isClean()) {
-            printRoomStatus();
-            moveBehaviour.move(this);
-            room.setCleanAtRobotPosition();
-            moveCount++;
+            Position nextPos = moveBehaviour.getNextMove();
+            if (room.isClean(nextPos)) {
+                moveToTarget(room.getNearestDirtyPosition(nextPos));
+            } else {
+                setPosition(nextPos);
+                room.setCleanAtRobotPosition();
+                printRoomStatus();
+                System.out.println("Cleaning...\n");
+                incrementMoveCount();
+            }
         }
-    
-        printRoomStatus();
+
         System.out.println("Room is clean!");
         System.out.println("Total moves: " + moveCount);
+    }
+
+    public void moveToTarget(Position target) {
+        moveBehaviour = new MoveToTarget(this, target);
+        moveBehaviour.init();
+
+        while (!room.getRobotPosition().equals(target)) {
+            setPosition(moveBehaviour.getNextMove());
+            room.setCleanAtRobotPosition();
+            printRoomStatus();
+            System.out.println("Moving to target...\n");
+            incrementMoveCount();
+        }
+
+        room.setCleanAtRobotPosition();
+        moveBehaviour = new MoveVerticalFirst(this);
+        moveBehaviour.init();
+    }
+
+    public void printRoomStatus() {
+        System.out.println(room.getLayout());
+    }
+
+    private void resetMoveCount() {
+        moveCount = 0;
+    }
+    
+    private void incrementMoveCount() {
+        moveCount++;
     }
 
 }
