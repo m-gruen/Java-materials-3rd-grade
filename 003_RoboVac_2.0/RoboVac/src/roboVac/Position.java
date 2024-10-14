@@ -12,10 +12,10 @@ public class Position {
 
     public Position[] getNeighbors() {
         return new Position[] {
-                new Position(x, y - 1),
-                new Position(x + 1, y),
-                new Position(x, y + 1),
-                new Position(x - 1, y)
+                new Position(x + Direction.NORTH.x, y + Direction.NORTH.y),
+                new Position(x + Direction.EAST.x, y + Direction.EAST.y),
+                new Position(x + Direction.SOUTH.x, y + Direction.SOUTH.y),
+                new Position(x + Direction.WEST.x, y + Direction.WEST.y),
         };
     }
 

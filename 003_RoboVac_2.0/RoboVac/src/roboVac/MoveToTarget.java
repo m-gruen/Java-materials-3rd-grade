@@ -27,9 +27,8 @@ public class MoveToTarget implements MoveBehaviour{
         Position nextPos = currentPos;
         int currentDistance = distanceMatrix[currentPos.y][currentPos.x];
         int nextDistance = currentDistance;
-
-        for (Direction direction : Direction.values()) {
-            Position newPos = new Position(currentPos.x + direction.x, currentPos.y + direction.y);
+    
+        for (Position newPos : currentPos.getNeighbors()) {
             if (roboVac.getRoom().isAccessible(newPos)) {
                 int newDistance = distanceMatrix[newPos.y][newPos.x];
                 if (newDistance < nextDistance) {
@@ -38,7 +37,7 @@ public class MoveToTarget implements MoveBehaviour{
                 }
             }
         }
-
+    
         return nextPos;
     }
 

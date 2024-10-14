@@ -65,8 +65,7 @@ public class Room {
             Position current = toVisit.remove(0);
             visited.add(current);
 
-            for (Direction dir : Direction.values()) {
-                Position next = new Position(current.x + dir.x, current.y + dir.y);
+            for (Position next : current.getNeighbors()) {
                 if (!(visited.contains(next) || toVisit.contains(next))) {
                     if (!layout.isValid(next)) {
                         distanceMatrix[next.y][next.x] = -1;
@@ -85,7 +84,7 @@ public class Room {
         int[][] distanceMatrix = getDistanceMatrix(pos);
         var dirtyPositions = new ArrayList<Position>();
         int minDistance = Integer.MAX_VALUE;
-        Position nearestDirty = null; 
+        Position nearestDirty = null;
 
         for (Position position : layout.getAllPosition()) {
             if (isDirty(position)) {
