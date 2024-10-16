@@ -14,9 +14,8 @@ public class MoveVerticalFirst implements MoveBehaviour {
 
     @Override
     public void init() {
-        verticalDirection = Direction.SOUTH;
+        verticalDirection = currentDirection = Direction.SOUTH;
         horizontalDirection = Direction.WEST;
-        currentDirection = verticalDirection;
         lastMoveWasVertical = true;
     }
 

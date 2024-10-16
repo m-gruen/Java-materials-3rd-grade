@@ -23,22 +23,21 @@ public class MoveToTarget implements MoveBehaviour{
 
     @Override
     public Position getNextMove() {
-        Position currentPos = roboVac.getRoom().getRobotPosition();
-        Position nextPos = currentPos;
-        int currentDistance = distanceMatrix[currentPos.y][currentPos.x];
-        int nextDistance = currentDistance;
-    
-        for (Position newPos : currentPos.getNeighbors()) {
-            if (roboVac.getRoom().isAccessible(newPos)) {
-                int newDistance = distanceMatrix[newPos.y][newPos.x];
-                if (newDistance < nextDistance) {
-                    nextPos = newPos;
-                    nextDistance = newDistance;
-                }
+        var robotPos = roboVac.getRoom().getRobotPosition();
+        if (robotPos.equals(target)) {
+            return null;
+        }
+
+        Position pos = null;
+
+        for (Position neighbor : robotPos.getNeighbors()) {
+            if (distanceMatrix[neighbor.y][neighbor.x] != -1
+                    && (pos == null || distanceMatrix[neighbor.y][neighbor.x] < distanceMatrix[pos.y][pos.x])) {
+                pos = neighbor;
             }
         }
-    
-        return nextPos;
+
+        return pos;
     }
 
 }

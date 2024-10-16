@@ -57,49 +57,46 @@ public class Room {
 
     public int[][] getDistanceMatrix(Position pos) {
         int[][] distanceMatrix = new int[layout.getHeight()][layout.getWidth()];
-        var visited = new ArrayList<Position>();
-        var toVisit = new ArrayList<Position>();
-        toVisit.add(pos);
 
-        while (!toVisit.isEmpty()) {
-            Position current = toVisit.remove(0);
-            visited.add(current);
-
-            for (Position next : current.getNeighbors()) {
-                if (!(visited.contains(next) || toVisit.contains(next))) {
-                    if (!layout.isValid(next)) {
-                        distanceMatrix[next.y][next.x] = -1;
-                    } else {
-                        toVisit.add(next);
-                        distanceMatrix[next.y][next.x] = distanceMatrix[current.y][current.x] + 1;
-                    }
-                }
+        for (int y = 0; y < distanceMatrix.length; y++) {
+            for (int x = 0; x < distanceMatrix[y].length; x++) {
+                distanceMatrix[y][x] = -1;
             }
         }
 
+        distanceMatrix[pos.y][pos.x] = 0;
+        var processingQueue = new ArrayList<Position>();
+        processingQueue.add(pos);
+    
+        while (!processingQueue.isEmpty()) {
+            Position current = processingQueue.remove(0);
+            for (Position neighbor : current.getNeighbors()) {
+                if (isAccessible(neighbor) && distanceMatrix[neighbor.y][neighbor.x] == -1) {
+                    distanceMatrix[neighbor.y][neighbor.x] = distanceMatrix[current.y][current.x] + 1;
+                    processingQueue.add(neighbor);
+                }
+            }
+        }
+    
         return distanceMatrix;
     }
 
     public Position getNearestDirtyPosition(Position pos) {
-        int[][] distanceMatrix = getDistanceMatrix(pos);
-        var dirtyPositions = new ArrayList<Position>();
-        int minDistance = Integer.MAX_VALUE;
-        Position nearestDirty = null;
-
-        for (Position position : layout.getAllPosition()) {
-            if (isDirty(position)) {
-                dirtyPositions.add(position);
+        Position nearestDirtyPosition = null;
+        var distances = getDistanceMatrix(pos);
+    
+        for (int y = 0; y < distances.length; y++) {
+            for (int x = 0; x < distances[0].length; x++) {
+                var current = new Position(x, y);
+    
+                if (isDirty(current) && (nearestDirtyPosition == null
+                        || distances[current.y][current.x] < distances[nearestDirtyPosition.y][nearestDirtyPosition.x])) {
+                    nearestDirtyPosition = current;
+                }
             }
         }
-
-        for (Position dirty : dirtyPositions) {
-            if (distanceMatrix[dirty.y][dirty.x] < minDistance) {
-                minDistance = distanceMatrix[dirty.y][dirty.x];
-                nearestDirty = dirty;
-            }
-        }
-
-        return nearestDirty;
+    
+        return nearestDirtyPosition;
     }
 
     public String getLayout() {
