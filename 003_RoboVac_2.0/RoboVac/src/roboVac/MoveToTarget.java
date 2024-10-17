@@ -31,7 +31,7 @@ public class MoveToTarget implements MoveBehaviour{
         Position pos = null;
 
         for (Position neighbor : robotPos.getNeighbors()) {
-            if (distanceMatrix[neighbor.y][neighbor.x] != -1
+            if (roboVac.getRoom().isAccessible(neighbor)
                     && (pos == null || distanceMatrix[neighbor.y][neighbor.x] < distanceMatrix[pos.y][pos.x])) {
                 pos = neighbor;
             }
