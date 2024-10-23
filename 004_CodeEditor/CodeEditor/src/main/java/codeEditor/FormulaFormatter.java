@@ -3,37 +3,20 @@ package codeEditor;
 import java.util.Arrays;
 import java.util.List;
 
-public class FormulaEditor {
-
-    private StringBuilder text;
+public class FormulaFormatter implements CodeFormatter {
 
     private static final char EOF = (char) -1;
     private static final List<String> FUNCTIONS = Arrays.asList(
-            "sin", "cos", "tan", "sqrt", "log", "ln", "exp"
-    );
+            "sin", "cos", "tan", "sqrt", "log", "ln", "exp");
 
     private int pos;
     private char ch;
+    private String text;
 
-    public FormulaEditor() {
-        text = new StringBuilder();
-    }
+    @Override
+    public String format(String code) {
+        text = code;
 
-
-    public void appendLine(String line) {
-        text.append(line);
-        text.append("\n");
-    }
-
-    public void deleteAll() {
-        text.delete(0, text.length());
-    }
-
-    public void print() {
-        System.out.println(format());
-    }
-
-    public String format() {
         StringBuilder formattedCode = new StringBuilder();
         pos = 0;
         boolean newLine = true;
@@ -51,12 +34,13 @@ public class FormulaEditor {
                         // read and format number
                         formattedCode.append(ConsoleColor.ANSI_BLUE + readNumber() + ConsoleColor.ANSI_RESET);
                         break;
-                    // check for variable, which starts with a letter and can contain letters and digits
+                    // check for variable, which starts with a letter and can contain letters and
+                    // digits
                     case 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
-                         'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
-                         'w', 'x', 'y', 'z',
-                         'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
-                         'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
+                            'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
+                            'w', 'x', 'y', 'z',
+                            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
+                            'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
                             'W', 'X', 'Y', 'Z':
                         // read and format word
                         formattedCode.append(readAndFormatWord());
