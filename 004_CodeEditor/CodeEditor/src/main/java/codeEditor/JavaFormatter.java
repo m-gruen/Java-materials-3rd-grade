@@ -32,14 +32,18 @@ public class JavaFormatter implements CodeFormatter {
             switch (ch) {
                 case 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
                         'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
-                        'w', 'x', 'y', 'z',
-                        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
+                        'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
                         'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
                         'W', 'X', 'Y', 'Z':
                     formattedCode.append(readAndFormatWord());
                     break;
                 case '/':
-                    formattedCode.append(readAndFormatComment());
+                    if (text.charAt(pos) == '/') {
+                        formattedCode.append(readAndFormatComment());
+                    } else {
+                        formattedCode.append(ch);
+                        nextChar();
+                    }
                     break;
                 case '"':
                     formattedCode.append(readAndFormatString());
@@ -104,4 +108,4 @@ public class JavaFormatter implements CodeFormatter {
         return ConsoleColor.ANSI_GREEN + string.toString() + ConsoleColor.ANSI_RESET;
     }
 
-}   
+}
