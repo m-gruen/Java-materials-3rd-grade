@@ -24,7 +24,7 @@ public class FormulaFormatter implements CodeFormatter {
 
         while (ch != EOF) {
             if (newLine) {
-                // read formated formula number
+                // read formatted formula number
                 formattedCode.append(readAndFormatFormulaNumber());
                 newLine = false;
             } else {
