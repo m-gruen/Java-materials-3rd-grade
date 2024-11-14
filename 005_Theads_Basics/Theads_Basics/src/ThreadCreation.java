@@ -16,5 +16,29 @@ public class ThreadCreation {
 
         Thread myThread = new Thread(myRunnable);
         myThread.start();
+
+        Thread myThread2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 1; i <= 4; i++) {
+                    System.out.print(" 3 ");
+                    try {
+                        Thread.sleep(600);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+        myThread2.start();
+
+        for (int i = 1; i <= 7; i++) {
+            System.out.print(" 0 ");
+            try {
+                Thread.sleep(600);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }
