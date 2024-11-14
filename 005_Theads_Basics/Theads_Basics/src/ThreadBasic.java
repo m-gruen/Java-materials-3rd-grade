@@ -1,6 +1,11 @@
-public class App {
+public class ThreadBasic {
     public static void main(String[] args) throws Exception {
         var currentThread = Thread.currentThread();
+        printThreadState(currentThread);
+
+        currentThread.setName("myThread");
+        currentThread.setPriority(Thread.MAX_PRIORITY);
+
         printThreadState(currentThread);
     }
 
