@@ -11,7 +11,7 @@ public class BankAccount {
         return balance;
     }
 
-    public void deposit(double amount) {
+    public synchronized void deposit(double amount) {
         try {
             System.out.println("Einzahlung: Warten auf System...");
             TimeUnit.SECONDS.sleep(5);
@@ -29,7 +29,7 @@ public class BankAccount {
                 balance);
     }
 
-    public void withdraw(double amount) {
+    public synchronized void withdraw(double amount) {
         try {
             System.out.println("Auszahlung: Warten auf System...");
             TimeUnit.SECONDS.sleep(1);
