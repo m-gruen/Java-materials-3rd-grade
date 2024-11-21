@@ -3,6 +3,7 @@ import java.time.Instant;
 
 public class CounterExt extends Thread {
     public static volatile int count = 0;
+    private static final Object lock = new Object();
 
     public int myCount = 0;
     public final int upperBound;
@@ -20,7 +21,7 @@ public class CounterExt extends Thread {
     public void run() {
         start = Instant.now();
         while (true) {
-            synchronized (this) {
+            synchronized (lock) {
                 if (count < upperBound) {
                     count++;
                     myCount++;
