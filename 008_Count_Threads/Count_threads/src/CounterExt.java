@@ -6,14 +6,13 @@ public class CounterExt extends Thread {
 
     public int myCount = 0;
     public final int upperBound;
-    public String name;
 
     public Instant start = null;
     public Instant end = null;
 
     public CounterExt(int upperBound, String name) {
+        super(name);
         this.upperBound = upperBound;
-        this.name = name;
     }
 
     @Override
@@ -33,7 +32,7 @@ public class CounterExt extends Thread {
 
         System.out.printf(
                 "Thread: %s, My Iterations: %d, Total Value: %d, Time: %d ms\n",
-                name,
+                getName(),
                 myCount,
                 count,
                 Duration.between(start, end).toMillis());
