@@ -17,7 +17,7 @@ public class CounterExt extends Thread {
         Instant start, end;
 
         start = Instant.now();
-        
+
         while (true) {
             synchronized (getClass()) {
                 if (count < upperBound) {
@@ -31,7 +31,7 @@ public class CounterExt extends Thread {
         }
 
         System.out.printf(
-                "Thread: %s, My Iterations: %d, Total Value: %d, Time: %d ms\n",
+                "%s\tIterations: %d\tTotal: %d\tTime: %d ms\n",
                 getName(),
                 myCount,
                 count,
