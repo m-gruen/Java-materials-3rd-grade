@@ -7,9 +7,6 @@ public class CounterExt extends Thread {
     public int myCount = 0;
     public final int upperBound;
 
-    public Instant start = null;
-    public Instant end = null;
-
     public CounterExt(int upperBound, String name) {
         super(name);
         this.upperBound = upperBound;
@@ -17,7 +14,10 @@ public class CounterExt extends Thread {
 
     @Override
     public void run() {
+        Instant start, end;
+
         start = Instant.now();
+        
         while (true) {
             synchronized (getClass()) {
                 if (count < upperBound) {
