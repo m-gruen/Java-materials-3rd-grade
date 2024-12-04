@@ -17,7 +17,7 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer %d: EUR %7.2f".formatted(this.id, this.value);
+        return "Customer %d:\tEUR %7.2f".formatted(this.id, this.value);
     }
 
     public double getValue() {
