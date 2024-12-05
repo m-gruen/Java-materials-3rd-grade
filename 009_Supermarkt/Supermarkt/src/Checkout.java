@@ -34,7 +34,7 @@ public class Checkout extends Thread {
             while (!queue.isEmpty()) {
                 synchronized (queue) {
                     if (queue.isEmpty()) {
-                        queue.wait(); // Wait for customers
+                        break;
                     } else {
                         c = queue.poll();
                         mySalesSum += c.getValue();
