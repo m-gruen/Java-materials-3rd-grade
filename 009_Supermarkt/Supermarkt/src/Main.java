@@ -3,7 +3,7 @@ import java.util.Queue;
 
 public class Main {
     public static void main(String[] args) {
-        
+        System.out.println("Supermarket simulation open");
 
         Queue<Customer> queue = new LinkedList<>();
 
@@ -31,5 +31,16 @@ public class Main {
         checkout1.interrupt();
         checkout2.interrupt();
         checkout3.interrupt();
+
+        try {
+            // Wait for all threads to finish
+            customerGen.join();
+            checkout1.join();
+            checkout2.join();
+            checkout3.join();
+        } catch (InterruptedException ignore) {
+        }
+
+        System.out.println("Supermarket simulation closed");
     }
 }
