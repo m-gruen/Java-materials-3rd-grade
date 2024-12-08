@@ -1,5 +1,6 @@
 package runnableSushi;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Producer extends Thread {
@@ -25,15 +26,18 @@ public class Producer extends Thread {
         this.foodType = foodType;
         this.belt = belt;
         this.pos = pos;
+        this.producedFood = new ArrayList<>();
     }
 
     @Override
     public void run() {
+        System.out.println(String.format("Producer %s starts producing at position %d ...", this.name, this.pos));
+
         while (!interrupted()) {
             try {
                 var food = new Food(String.format("%s-%d", this.name, lastFoodId++), this.foodType);
                 producedFood.add(food);
-
+    
                 synchronized (belt) {
                     while (!belt.isFreeAtPosition(pos)) {
                         belt.wait();
@@ -43,9 +47,10 @@ public class Producer extends Thread {
                 }
                 Thread.sleep((long) (1000 + Math.random() * 1000)); // Sleep for a random time between 1 and 2 seconds
             } catch (InterruptedException ignore) {
+                break; // Exit the loop if interrupted
             }
         }
-
+    
         System.out.println(String.format("Producer %s stopped", this.name));
         System.out.println(this.getProducedFood());
     }
