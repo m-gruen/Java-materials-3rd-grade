@@ -58,7 +58,7 @@ public class Belt extends Thread {
     public boolean add(Food food, int pos) {
         if (isFreeAtPosition(pos)) {
             foodArr[pos] = food;
-            return true;   
+            return true;
         }
         return false;
     }
@@ -99,9 +99,10 @@ public class Belt extends Thread {
                 }
                 Thread.sleep(500);
             } catch (InterruptedException ignore) {
+                break; // Exit the loop if interrupted
             }
         }
-        
+
         System.out.println("Belt stopped");
     }
 
@@ -117,7 +118,7 @@ public class Belt extends Thread {
         for (int i = 0; i < foodArr.length; i++) {
             sb.append(String.format("-(%d:", i));
             if (foodArr[i] != null) {
-                sb.append(String.format("%s)",foodArr[i].getId()));
+                sb.append(String.format("%s)", foodArr[i].getId()));
             } else {
                 sb.append("...)");
             }
