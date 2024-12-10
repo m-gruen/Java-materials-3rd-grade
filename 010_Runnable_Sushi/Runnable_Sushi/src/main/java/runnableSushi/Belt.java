@@ -99,7 +99,7 @@ public class Belt extends Thread {
                 }
                 Thread.sleep(500);
             } catch (InterruptedException ignore) {
-                break; // Exit the loop if interrupted
+                break; 
             }
         }
 

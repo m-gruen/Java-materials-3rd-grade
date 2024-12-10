@@ -22,7 +22,7 @@ public class CleanerBehavior implements ConsumeBehavior {
                 }
                 // Does not sleep    
             } catch (Exception ignore) {
-                break; // Exit the loop if interrupted
+                break;
             }
         }
     }

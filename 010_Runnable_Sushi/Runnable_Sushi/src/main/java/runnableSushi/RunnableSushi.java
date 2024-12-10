@@ -6,7 +6,7 @@ public class RunnableSushi {
         System.out.println("Runnable Sushi opens ...");
 
         // Create and start belt
-        var belt = new Belt(10);
+        var belt = new Belt(12);
         belt.start();
 
         // Create and start cooks

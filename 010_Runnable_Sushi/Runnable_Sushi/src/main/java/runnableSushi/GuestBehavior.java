@@ -17,9 +17,9 @@ public class GuestBehavior implements ConsumeBehavior {
     
                     System.out.println(String.format("*** %s consumed %s at position %d", name, food.getId(), pos));
                 }
-                Thread.sleep((long) (1000 + Math.random() * 5000)); // Sleep for a random time between 1 and 5 seconds         
+                Thread.sleep((long) (1000 + Math.random() * 4000));      
             } catch (InterruptedException ignore) {
-                break; // Exit the loop if interrupted
+                break;
             }
         }
     }
