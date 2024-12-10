@@ -20,7 +20,6 @@ public class CleanerBehavior implements ConsumeBehavior {
     
                     System.out.println(String.format("*** %s consumed %s at position %d", name, food.getId(), pos));
                 }
-                // Does not sleep    
             } catch (Exception ignore) {
                 break;
             }

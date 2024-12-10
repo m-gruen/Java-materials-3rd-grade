@@ -45,9 +45,9 @@ public class Producer extends Thread {
                     belt.add(food, pos);
                     System.out.println(String.format("*** %s placed %s at position %d", this.name, food.getId(), pos));
                 }
-                Thread.sleep((long) (1000 + Math.random() * 1000)); // Sleep for a random time between 1 and 2 seconds
+                Thread.sleep((long) (1000 + Math.random() * 1000)); 
             } catch (InterruptedException ignore) {
-                break; // Exit the loop if interrupted
+                break;
             }
         }
     
