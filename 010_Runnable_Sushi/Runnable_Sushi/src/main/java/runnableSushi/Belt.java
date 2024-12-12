@@ -90,17 +90,17 @@ public class Belt extends Thread {
 
     @Override
     public void run() {
-        while (!interrupted()) {
-            try {
+
+        try {
+            while (!interrupted()) {
                 synchronized (this) {
                     this.move();
                     this.notifyAll();
                     System.out.println(this.toString());
                 }
                 Thread.sleep(500);
-            } catch (InterruptedException ignore) {
-                break; 
             }
+        } catch (InterruptedException ignore) {
         }
 
         System.out.println("Belt stopped");

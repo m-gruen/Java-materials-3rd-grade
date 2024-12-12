@@ -33,11 +33,11 @@ public class Producer extends Thread {
     public void run() {
         System.out.println(String.format("Producer %s starts producing at position %d ...", this.name, this.pos));
 
-        while (!interrupted()) {
-            try {
+        try {
+            while (!interrupted()) {
                 var food = new Food(String.format("%s-%d", this.name, lastFoodId++), this.foodType);
                 producedFood.add(food);
-    
+
                 synchronized (belt) {
                     while (!belt.isFreeAtPosition(pos)) {
                         belt.wait();
@@ -45,12 +45,11 @@ public class Producer extends Thread {
                     belt.add(food, pos);
                     System.out.println(String.format("*** %s placed %s at position %d", this.name, food.getId(), pos));
                 }
-                Thread.sleep((long) (1000 + Math.random() * 1000)); 
-            } catch (InterruptedException ignore) {
-                break;
+                Thread.sleep((long) (1000 + Math.random() * 1000));
             }
+        } catch (InterruptedException ignore) {
         }
-    
+
         System.out.println(String.format("Producer %s stopped", this.name));
         System.out.println(this.getProducedFood());
     }
