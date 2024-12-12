@@ -2,6 +2,7 @@ package runnableSushi;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Producer extends Thread {
 
@@ -10,6 +11,7 @@ public class Producer extends Thread {
     private Belt belt;
     private int pos;
     private List<Food> producedFood;
+    private Random random = new Random();
 
     private int lastFoodId = 1;
 
@@ -36,16 +38,16 @@ public class Producer extends Thread {
         try {
             while (!interrupted()) {
                 var food = new Food(String.format("%s-%d", this.name, lastFoodId++), this.foodType);
-                producedFood.add(food);
+                Thread.sleep(random.nextInt(1000, 2000));
 
                 synchronized (belt) {
                     while (!belt.isFreeAtPosition(pos)) {
                         belt.wait();
                     }
                     belt.add(food, pos);
-                    System.out.println(String.format("*** %s placed %s at position %d", this.name, food.getId(), pos));
                 }
-                Thread.sleep((long) (1000 + Math.random() * 1000));
+                System.out.println(String.format("*** %s placed %s at position %d", this.name, food.getId(), pos));
+                producedFood.add(food);
             }
         } catch (InterruptedException ignore) {
         }
