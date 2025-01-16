@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
 public class LotteryAnalyzer {
 
     private static final List<Integer> WINING_NUMBERS = List.of(3, 8, 15, 22, 34, 42);
-    private static final int NUMBER_OF_THREADS = 16;
+    private static final int NUMBER_OF_THREADS = 11;
     private static final String FILE_EXTENSION = ".txt";
     private static final String DIRECTORY_PATH = "files";
 
