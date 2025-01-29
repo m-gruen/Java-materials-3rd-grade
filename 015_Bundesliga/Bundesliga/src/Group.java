@@ -13,8 +13,12 @@ public enum Group {
         return displayName;
     }
 
-    @Override
-    public String toString() {
-        return displayName;
+    public static Group fromDisplayName(String displayName) {
+        for (Group group : Group.values()) {
+            if (group.getDisplayName().equalsIgnoreCase(displayName)) {
+                return group;
+            }
+        }
+        throw new IllegalArgumentException("No enum constant with display name " + displayName);
     }
 }
