@@ -16,16 +16,8 @@ public record Match(
     @Override
     public String toString() {
         return String.format(
-                "Gruppe: %s, Heimmannschaft: %s, Gastmannschaft: %s",
-                group,
-                homeTeam,
-                awayTeam);
-    }
-
-    public String detailedToString() {
-        return String.format(
-                "Gruppe: %s, Spieltag: %d, Datum: %s, Uhrzeit: %s, Heimmannschaft: %s, Gastmannschaft: %s, Tore Heimmannschaft: %d, Tore Gastmannschaft: %d, Tore Heimmannschaft Halbzeit: %d, Tore Gastmannschaft Halbzeit: %d",
-                group,
+                "%s %d %s %s %s vs. %s %d:%d %d:%d",
+                group.getDisplayName(),
                 playDay,
                 date,
                 time,
