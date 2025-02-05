@@ -25,8 +25,8 @@ public class Main {
         Predicate<Match> drawGamesMyTeam = match -> match.getWinner().equals("unentschieden");
         Predicate<Match> zeroZeroGames = match -> match.homeGoals() == 0 && match.awayGoals() == 0;
 
-        System.err.println("Fragen zur Bundesliga-Saison 2023/24:");
-        System.err.println();
+        System.out.println("Fragen zur Bundesliga-Saison 2023/24:");
+        System.out.println();
 
         // a)
         System.out.println("a) Drucken Sie alle Spiele des Lieblingsvereins!");
