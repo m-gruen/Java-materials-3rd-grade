@@ -25,7 +25,7 @@
 
     <Label text="Plain text:"/>
     <TextArea prefHeight="400"/>
-    <Button text="Encrypt"/>
+    <Button text="Encrypt" prefWidth="200"/>
 
     <Label text="Encrypted text:"/>
     <TextArea prefHeight="400"/>
