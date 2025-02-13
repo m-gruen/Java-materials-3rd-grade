@@ -1,3 +1,11 @@
+.root {
+    -fx-background-color: transparent;
+}
+
+.button {
+    -fx-background-color: transparent;
+}
+
 .btnUntis {
     -fx-background-image: url('images/webuntis.png');
     -fx-background-size: 64.0 64.0;
