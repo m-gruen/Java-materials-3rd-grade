@@ -5,10 +5,14 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
@@ -48,17 +52,26 @@ public class HelloApplication extends Application {
             }
         });
 
-        btnMoodle.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+        btnMoodle.setOnAction(event -> {
                 getHostServices().showDocument("https://edufs.edu.htl-leonding.ac.at/moodle/");
-            }
         });
 
-        Scene scene = new Scene(root);
+        // Some more actions
+        // ...
+
+        btnExit.setOnAction(event -> System.exit(0));
+
+        Scene scene = new Scene(root, 340, 100);
+        scene.setFill(Color.TRANSPARENT);
         scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-        stage.setTitle("Hello!");
+        // stage.setTitle("Hello!");
         stage.setScene(scene);
+
+        Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
+        stage.setX(screenSize.getWidth() / 2 - scene.getWidth() / 2);
+        stage.setY(20);
+        stage.initStyle(StageStyle.TRANSPARENT);
+
         stage.show();
     }
 
