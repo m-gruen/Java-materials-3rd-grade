@@ -2,6 +2,7 @@ package com.example.encrypter;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import java.util.Random;
@@ -12,7 +13,28 @@ public class HelloController {
     @FXML
     private TextField txtAlphabet, txtKey;
 
-    public void onStandartButtonClicked(ActionEvent actionEvent) {
+    @FXML
+    private TextArea txtPlainText, txtEncrypedText;
+
+    public void initialize() {
+        txtPlainText.selectedTextProperty().addListener(
+            (observable, oldValue, newValue) -> {
+                int start = txtPlainText.getSelection().getStart();
+                int end = txtPlainText.getSelection().getEnd();
+                txtEncrypedText.selectRange(start, end);
+            }
+        );
+
+        txtEncrypedText.selectedTextProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    int start = txtEncrypedText.getSelection().getStart();
+                    int end = txtEncrypedText.getSelection().getEnd();
+                    txtPlainText.selectRange(start, end);
+                }
+        );
+    }
+
+    public void onStandardButtonClicked(ActionEvent actionEvent) {
         txtAlphabet.setText("abcdefghijklmnopqrstuvwxyzäöüß");
     }
 
@@ -27,5 +49,9 @@ public class HelloController {
                 .collect(Collectors.joining());
 
         txtKey.setText(key);
+    }
+
+    private void encrypt() {
+
     }
 }

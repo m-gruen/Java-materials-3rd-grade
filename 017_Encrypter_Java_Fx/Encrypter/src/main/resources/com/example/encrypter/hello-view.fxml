@@ -16,7 +16,7 @@
     <GridPane>
         <Label text="Alphabet: " GridPane.rowIndex="0" GridPane.columnIndex="0"/>
         <TextField fx:id="txtAlphabet" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="550"/>
-        <Button text="Standard" prefWidth="200" GridPane.rowIndex="0" GridPane.columnIndex="2" onAction="#onStandartButtonClicked"/>
+        <Button text="Standard" prefWidth="200" GridPane.rowIndex="0" GridPane.columnIndex="2" onAction="#onStandardButtonClicked"/>
 
         <Label text="Key: " GridPane.rowIndex="1" GridPane.columnIndex="0"/>
         <TextField fx:id="txtKey" GridPane.rowIndex="1" GridPane.columnIndex="1" prefWidth="550"/>
@@ -24,10 +24,10 @@
     </GridPane>
 
     <Label text="Plain text:"/>
-    <TextArea prefHeight="400"/>
+    <TextArea prefHeight="400" fx:id="txtPlainText"/>
     <Button text="Encrypt" prefWidth="200"/>
 
     <Label text="Encrypted text:"/>
-    <TextArea prefHeight="400"/>
+    <TextArea prefHeight="400" fx:id="txtEncrypedText"/>
 
 </VBox>
