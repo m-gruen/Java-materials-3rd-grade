@@ -1,6 +1,7 @@
 package com.example.encrypter;
 
 import com.example.encrypter.model.Encrypter;
+import com.example.encrypter.model.FileWriterUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
@@ -17,7 +18,6 @@ public class EncrypterController {
 
     public void initialize() {
         encrypter = new Encrypter();
-
         txtPlainText.selectedTextProperty().addListener(
             (observable, oldValue, newValue) -> {
                 int start = txtPlainText.getSelection().getStart();
@@ -46,5 +46,9 @@ public class EncrypterController {
 
     public void onRecalcButtonClicked(ActionEvent actionEvent) {
         encrypter.generateRandomKey();
+    }
+
+    public void onSaveButtonClicked(ActionEvent actionEvent) {
+        encrypter.saveData();
     }
 }
