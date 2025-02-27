@@ -25,9 +25,10 @@
 
     <Label text="Plain text:"/>
     <TextArea prefHeight="400" fx:id="txtPlainText"/>
-    <Button text="Encrypt" prefWidth="200"/>
 
     <Label text="Encrypted text:"/>
     <TextArea prefHeight="400" fx:id="txtEncrypedText"/>
+
+    <Button text="Save" prefWidth="200" onAction="#onSaveButtonClicked"/>
 
 </VBox>
