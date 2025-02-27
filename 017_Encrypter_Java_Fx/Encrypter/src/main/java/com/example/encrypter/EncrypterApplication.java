@@ -13,7 +13,7 @@ public class EncrypterApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(EncrypterApplication.class.getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1250, 1250);
         scene.getStylesheets().add(EncrypterApplication.class.getResource("styles.css").toExternalForm());
-        stage.setTitle("Hello!");
+        stage.setTitle("Encrypter");
         stage.setScene(scene);
         stage.show();
     }
