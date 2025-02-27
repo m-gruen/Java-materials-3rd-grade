@@ -6,11 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
-import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-public class HelloController {
+public class EncrypterController {
     Encrypter encrypter;
 
     @FXML

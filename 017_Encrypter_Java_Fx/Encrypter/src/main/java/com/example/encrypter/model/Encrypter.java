@@ -16,11 +16,13 @@ public class Encrypter {
     private StringProperty encryptedText = new SimpleStringProperty("");
 
     public Encrypter() {
+        alphabet.addListener((observable, oldValue, newValue) -> generateRandomKey());
+        key.addListener((observable, oldValue, newValue) -> encrypt());
+        plainText.addListener((observable, oldValue, newValue) -> encrypt());
+
         setDefaultAlphabet();
         setPlainText("Please enter your text here.");
     }
-
-    // Getter and Setter ????
 
     public String getAlphabet() {
         return alphabet.get();
