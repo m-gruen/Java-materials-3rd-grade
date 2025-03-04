@@ -1,3 +1,7 @@
+import java.util.Random;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Main {
@@ -7,7 +11,7 @@ public class Main {
 
         // 1. Drucken Sie alle geraden Zahlen von 2 bis 10, getrennt durch Leerzeichen.
         System.out.println("1. Drucken Sie alle geraden Zahlen von 2 bis 10, getrennt durch Leerzeichen.");
-        Stream.iterate(2, x -> x + 2)
+        IntStream.iterate(2, x -> x + 2)
                 .limit(5)
                 .forEach(x -> System.out.print(x + " "));
         System.out.println();
@@ -16,14 +20,14 @@ public class Main {
         // Tipp: Erstellen Sie sich eine Hilfsmethode zur Prüfung, ob eine Zahl Primzahl
         // ist oder nicht!
         System.out.println("2. Drucken Sie alle Primzahlen von 1 - 100, getrennt durch Leerzeichen.");
-        Stream.iterate(2, x -> x <= 100, x -> x + 1)
+        IntStream.iterate(2, x -> x <= 100, x -> x + 1)
                 .filter(Main::isPrime)
                 .forEach(x -> System.out.print(x + " "));
         System.out.println();
 
         // 3. Drucken Sie die ersten 100 Primzahlen, getrennt durch Leerzeichen.
         System.out.println("3. Drucken Sie die ersten 100 Primzahlen, getrennt durch Leerzeichen.");
-        Stream.iterate(2, x -> x + 1)
+        IntStream.iterate(2, x -> x + 1)
                 .filter(Main::isPrime)
                 .limit(100)
                 .forEach(x -> System.out.print(x + " "));
@@ -31,44 +35,104 @@ public class Main {
 
         // 4. Drucken Sie die Summe ersten 10 Primzahlen.
         System.out.println("4. Drucken Sie die Summe ersten 10 Primzahlen.");
+        int sum = IntStream.iterate(2, x -> x + 1)
+                .filter(Main::isPrime)
+                .limit(10)
+                .sum();
+        System.out.println(sum);
 
         // 5. Nutzen Sie iterate, um ein int-Array mit den Primzahlen von 1 bis 59 zu
         // erzeugen. Drucken Sie diese.
         System.out.println("5. Nutzen Sie iterate, um ein int-Array mit den Primzahlen von 1 bis 59 zu erzeugen.");
+        int[] primes = IntStream.iterate(2, x -> x <= 59, x -> x + 1)
+                .filter(Main::isPrime)
+                .toArray();
+        for (int prime : primes) {
+            System.out.print(prime + " ");
+        }
+        System.out.println();
 
         // 6. Nutzen Sie range, um ein int-Array mit den Primzahlen von 1 bis 59 zu
         // erzeugen. Drucken Sie diese.
         System.out.println("6. Nutzen Sie range, um ein int-Array mit den Primzahlen von 1 bis 59 zu erzeugen.");
+        int[] primes2 = IntStream.range(2, 60)
+                .filter(Main::isPrime)
+                .toArray();
+        for (int prime : primes2) {
+            System.out.print(prime + " ");
+        }
+        System.out.println();
 
         // 7. Nutzen Sie rangeClosed, um ein int-Array mit den Primzahlen von 1 bis 59
         // zu erzeugen. Drucken Sie diese.
         System.out.println("7. Nutzen Sie rangeClosed, um ein int-Array mit den Primzahlen von 1 bis 59 zu erzeugen.");
+        int[] primes3 = IntStream.rangeClosed(2, 59)
+                .filter(Main::isPrime)
+                .toArray();
+        for (int prime : primes3) {
+            System.out.print(prime + " ");
+        }
+        System.out.println();
 
         // 8. Drucken Sie 10 Zufallszahlen von 1 bis 100 (Duplikate sind erlaubt).
         // Nutzen Sie Math.random().
         System.out.println("8. Drucken Sie 10 Zufallszahlen von 1 bis 100 (Duplikate sind erlaubt).");
+        IntStream.generate(() -> (int) (Math.random() * 100) + 1)
+                .limit(10)
+                .forEach(x -> System.out.print(x + " "));
+        System.out.println();
 
         // 9. Drucken Sie 10 Zufallszahlen von 1 bis 100 (Duplikate sind erlaubt).
         // Nutzen Sie die Random-Klasse.
         System.out.println("9. Drucken Sie 10 Zufallszahlen von 1 bis 100 (Duplikate sind erlaubt).");
+        Random random = new Random();
+        IntStream.generate(() -> random.nextInt(100) + 1)
+                .limit(10)
+                .forEach(x -> System.out.print(x + " "));
+        System.out.println();
 
         // 10. Drucken Sie 10 Zufallszahlen von 1 bis 100 (ohne Duplikate).
         System.out.println("10. Drucken Sie 10 Zufallszahlen von 1 bis 100 (ohne Duplikate).");
+        IntStream.generate(() -> random.nextInt(100) + 1)
+                .distinct()
+                .limit(10)
+                .forEach(x -> System.out.print(x + " "));
+        System.out.println();
 
         // 11. Drucken Sie 10 Zufallszahlen von 1 bis 100 (ohne Duplikate, in
         // aufsteigender Reihenfolge sortiert).
         System.out.println(
                 "11. Drucken Sie 10 Zufallszahlen von 1 bis 100 (ohne Duplikate, in aufsteigender Reihenfolge sortiert).");
+        IntStream.generate(() -> random.nextInt(100 + 1))
+                .distinct()
+                .limit(10)
+                .sorted()
+                .forEach(x -> System.out.print(x + " "));
+        System.out.println();
 
         // 12. Erzeugen Sie 10 Zufallszahlen von 1 bis 100 (ohne Duplikate) und drucken
         // Sie nur jene, welche unter 50 sind in absteigender Reihenfolge.
         System.out.println(
                 "12. Erzeugen Sie 10 Zufallszahlen von 1 bis 100 (ohne Duplikate) und drucken Sie nur jene, welche unter 50 sind in absteigender Reihenfolge.");
+        IntStream.generate(() -> random.nextInt(100 + 1))
+                .distinct()
+                .limit(10)
+                .filter(x -> x < 50)
+                .boxed()
+                .sorted((n1, n2) -> n2 - n1)
+                .forEach(x -> System.out.print(x + " "));
+        System.out.println();
 
         // 13. Erzeugen Sie 1000 Zufallszahlen von 1 bis 100 und geben Sie aus, wie
         // häufig jede Zahl vorkommt.
         System.out.println(
                 "13. Erzeugen Sie 1000 Zufallszahlen von 1 bis 100 und geben Sie aus, wie häufig jede Zahl vorkommt.");
+        IntStream.generate(() -> random.nextInt(100) + 1)
+                .limit(1000)
+                .boxed()
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .forEach((k, v) -> System.out.println(k + ": " + v));
+        System.out.println();
 
         // 14. Erzeugen Sie 1000 Zufallszahlen von 1 bis 100 und drucken Sie die 3 am
         // häufigsten vorkommenden Zahlen.
