@@ -171,51 +171,106 @@ public class Main {
         // 17. Erzeugen Sie einen 10-stelligen String aus zufälligen Groß- und
         // Kleinbuchstaben.
         System.out.println("17. Erzeugen Sie einen 10-stelligen String aus zufälligen Groß- und Kleinbuchstaben.");
+        String randomLetters = IntStream.generate(() -> random.nextInt('A', 'z' + 1))
+                .filter(c -> Character.isAlphabetic(c) || Character.isDigit(c))
+                .limit(10)
+                .mapToObj(c -> Character.toString((char) c))
+                .collect(Collectors.joining());
+        System.out.println(randomLetters);
 
         // 18. Erzeugen Sie einen String all jener Zeichen, deren ASCII-Code eine
         // Primzahl ist.
         System.out.println("18. Erzeugen Sie einen String all jener Zeichen, deren ASCII-Code eine Primzahl ist.");
+        String primeAscii = IntStream.rangeClosed('A', 'z')
+                .filter(Main::isPrime)
+                .mapToObj(c -> Character.toString((char) c))
+                .collect(Collectors.joining());
+        System.out.println(primeAscii);
 
         // 19. Erzeugen Sie einen 20-stelliges, zufälliges Passwort, das aus Ziffern,
         // Groß- und Kleinbuchstaben besteht.
         System.out.println(
                 "19. Erzeugen Sie einen 20-stelliges, zufälliges Passwort, das aus Ziffern, Groß- und Kleinbuchstaben besteht.");
+        String password = IntStream.generate(() -> random.nextInt('0', 'z' + 1))
+                .filter(c -> Character.isAlphabetic(c) || Character.isDigit(c))
+                .limit(20)
+                .mapToObj(c -> Character.toString((char) c))
+                .collect(Collectors.joining());
+        System.out.println(password);
 
         // 20. Erzeugen Sie einen zufälligen TAN-Code, der aus einer Sequenz von 2
         // Großbuchstaben, 2 Ziffern und 2 Kleinbuchstaben besteht.
         System.out.println(
                 "20. Erzeugen Sie einen zufälligen TAN-Code, der aus einer Sequenz von 2 Großbuchstaben, 2 Ziffern und 2 Kleinbuchstaben besteht.");
+        String tan = IntStream.generate(() -> random.nextInt('A', 'Z' + 1))
+                .limit(2)
+                .mapToObj(c -> Character.toString((char) c))
+                .collect(Collectors.joining())
+                + IntStream.generate(() -> random.nextInt('0', '9' + 1))
+                        .limit(2)
+                        .mapToObj(c -> Character.toString((char) c))
+                        .collect(Collectors.joining())
+                + IntStream.generate(() -> random.nextInt('a', 'z' + 1))
+                        .limit(2)
+                        .mapToObj(c -> Character.toString((char) c))
+                        .collect(Collectors.joining());
+        System.out.println(tan);
 
         // Erstellen Sie einen String-Array mit den Elementen "apple", "banana",
         // "cherry", "date", "elderberry", "fig".
+        String[] fruits = { "apple", "banana", "cherry", "date", "elderberry", "fig" };
+
         // 21. Erzeugen Sie einen String, der alle Früchte enthält, durch Komma
         // separiert.
         System.out.println("21. Erzeugen Sie einen String, der alle Früchte enthält, durch Komma separiert.");
+        String fruitsString = Stream.of(fruits)
+                .collect(Collectors.joining(","));
+        System.out.println(fruitsString);
 
         // 22. Erzeugen Sie einen String, der alle Früchte, umgewandelt in
         // Großbuchstaben, enthält, durch Komma separiert.
         System.out.println(
                 "22. Erzeugen Sie einen String, der alle Früchte, umgewandelt in Großbuchstaben, enthält, durch Komma separiert.");
+        String upperCaseFruits = Stream.of(fruits)
+                .map(String::toUpperCase)
+                .collect(Collectors.joining(","));
+        System.out.println(upperCaseFruits);
 
         // 23. Erzeugen Sie einen Fruchtsalat, in dem die Früchte zufällig angeordnet
         // sind, durch Komma und Leerzeichen getrennt.
         System.out.println(
                 "23. Erzeugen Sie einen Fruchtsalat, in dem die Früchte zufällig angeordnet sind, durch Komma und Leerzeichen getrennt.");
+        String fruitSalad = Stream.of(fruits)
+                .sorted((a, b) -> random.nextInt(-1, 2))
+                .collect(Collectors.joining(", "));
+        System.out.println(fruitSalad);
 
         // 24. Erzeugen Sie einen String, bei dem die Anfangsbuchstaben der Früchte in
         // Großbuchstaben angeführt sind.
         System.out.println(
                 "24. Erzeugen Sie einen String, bei dem die Anfangsbuchstaben der Früchte in Großbuchstaben angeführt sind.");
+        String firstLetterBig = Stream.of(fruits)
+                .map(f -> f.substring(0, 1).toUpperCase() + f.substring(1))
+                .collect(Collectors.joining(", "));
+        System.out.println(firstLetterBig);
 
         // 25. Erzeugen Sie einen String, der ein Alphabet der Früchte angibt: „A for
         // apple, B for banana, …“.
         System.out.println(
-                "25. Erzeugen Sie einen String, der ein Alphabet der Früchte angibt: „A for apple, B for banana, …“.");
+                "25. Erzeugen Sie einen String, der ein Alphabet der Früchte angibt: 'A for apple, B for banana, …'.");
+        String alphabetFruits = Stream.of(fruits)
+                .map(f -> f.substring(0, 1).toUpperCase() + " for " + f)
+                .collect(Collectors.joining(", "));
+        System.out.println(alphabetFruits);
 
         // 26. Erzeugen Sie einen String aller Früchte, wobei jede Frucht rückwärts
         // ausgegeben wird: apple -> elppa, …
         System.out.println(
                 "26. Erzeugen Sie einen String aller Früchte, wobei jede Frucht rückwärts ausgegeben wird: apple -> elppa, …");
+        String reversedFruits = Stream.of(fruits)
+                .map(f -> new StringBuilder(f).reverse().toString())
+                .collect(Collectors.joining(", "));
+        System.out.println(reversedFruits);
 
         // 27. Erzeugen Sie neue Früchte, indem Sie zunächst alle Früchte
         // aneinanderreihen und dann an zufälligen
@@ -224,6 +279,11 @@ public class Main {
         // umzuwandeln.
         System.out.println(
                 "27. Erzeugen Sie neue Früchte, indem Sie zunächst alle Früchte aneinanderreihen und dann an zufälligen Stellen Komma + Leerzeichen einfügen, z. B. „app, leban, anacher, ry …“.");
+        String newFruits = Stream.of(fruits)
+                .flatMap(str -> str.chars().mapToObj(c -> (char) c))
+                .map(c -> c + ((random.nextInt(6) == 0) ? ", " : ""))
+                .collect(Collectors.joining());
+        System.out.println(newFruits);
 
     }
 
