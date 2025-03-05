@@ -13,7 +13,6 @@ public record Person(
 
 
     public String toString() {
-        // TODO
         return String.format("%s %d\t%-30s %s %s (%d) BMI %.1f-%-15s\t%-4d\t%5.1f\t|\t%5.1f (%s%.1f)",
                 hasAborted() ? "*" : " ",
                 id,
@@ -31,12 +30,10 @@ public record Person(
     }
 
     public boolean hasAborted() {
-        // TODO
         return weight_T2 == 0;
     }
 
     public int getAge() {
-        // TODO
         int age = LocalDate.now().getYear() - dayOfBirth.getYear();
 
         if (LocalDate.now().getDayOfYear() < dayOfBirth.getDayOfYear()) {
@@ -47,12 +44,10 @@ public record Person(
     }
 
     public double getBMI() {
-        // TODO
         return weight_T1 / ((double) height / 100d * (double) height / 100);
     }
 
     public String getBMIClass() {
-        // TODO
         double bmi = getBMI();
 
         if (bmi < 18.5) {

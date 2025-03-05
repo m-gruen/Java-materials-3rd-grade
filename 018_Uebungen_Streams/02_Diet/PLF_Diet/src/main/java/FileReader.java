@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class FileReader {
-
     public static List<Person> readPersonsFromFile(Path filePath) {
         List<Person> persons = new ArrayList<>();
         try {
@@ -24,7 +23,6 @@ public class FileReader {
     }
 
     private static Person processLine(String line) {
-        // TODO
         try {
             String[] parts = line.split(";");
             int id = Integer.parseInt(parts[0]);
