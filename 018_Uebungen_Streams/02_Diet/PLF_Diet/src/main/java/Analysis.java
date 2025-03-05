@@ -1,10 +1,11 @@
+import java.nio.file.Path;
 import java.util.List;
 
 public class Analysis {
     public static void main(String[] args) {
         // TODO: Read persons from file
         List<Person> persons = PersonMocks.getPersonMocks();
-        //List<Person> persons = FileReader.readPersonsFromFile(Path.of("files/data.csv"));
+        List<Person> persons1 = FileReader.readPersonsFromFile(Path.of("files/data.csv"));
 
         // a) Wie viele Personen (absolut und in %) haben die Untersuchung abgebrochen (weight_T2 == 0)?
         System.out.println("===================================================================================");

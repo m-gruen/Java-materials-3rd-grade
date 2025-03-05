@@ -37,7 +37,13 @@ public record Person(
 
     public int getAge() {
         // TODO
-        return LocalDate.now().getYear() - dayOfBirth.getYear();
+        int age = LocalDate.now().getYear() - dayOfBirth.getYear();
+
+        if (LocalDate.now().getDayOfYear() < dayOfBirth.getDayOfYear()) {
+            age--;
+        }
+
+        return age;
     }
 
     public double getBMI() {
