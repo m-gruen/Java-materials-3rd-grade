@@ -1,5 +1,6 @@
 package htl.at;
 
+import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
@@ -9,6 +10,7 @@ import java.util.stream.Stream;
 public class Analysis {
     public static void main(String[] args) {
         List<Sale> sales = SaleMocks.getSaleMocks();
+        List<Sale> sales2 = FileReader.readSalesFormFile(Path.of("files/sales.csv"));
 
         // a) Wie viele Verkäufe wurden im Jänner 2024 getätigt und was war der Gesamtumsatz?
         System.out.println("=== a) Wie viele Verkäufe wurden im Jänner 2024?");
