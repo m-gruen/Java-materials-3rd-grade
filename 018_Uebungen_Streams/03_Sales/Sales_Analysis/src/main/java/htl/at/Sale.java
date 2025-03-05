@@ -14,7 +14,7 @@ public record Sale(
         int quantity,
         double pricePerUnit,
         String payment) {
-    // TODO: implement changes toString() method
+
     @Override
     public String toString() {
         return "%s %7d %-9s %s %7d %-20s %7d %-12s %4d %8.2f %10.2f %-10s".formatted(

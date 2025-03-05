@@ -11,7 +11,6 @@ import java.util.List;
 public class FileReader {
 
     public static List<Sale> readSalesFormFile(Path filePath) {
-        // TODO
         List<Sale> sales = new ArrayList<>();
         try {
             sales = Files.readAllLines(filePath)
@@ -28,7 +27,6 @@ public class FileReader {
     }
 
     private static Sale processLine(String line) {
-        // TODO
         try {
             String[] parts = line.split(";");
             int id = Integer.parseInt(parts[0]);
