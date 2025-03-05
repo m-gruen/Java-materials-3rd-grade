@@ -1,3 +1,4 @@
+
 import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -5,6 +6,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Main {
+
     public static void main(String[] args) {
         // Erledigen Sie untenstehende Aufgaben. Nutzen Sie dabei Streams und verwenden
         // Sie generate, iterate bzw. of zum Erzeugung eines Streams!
@@ -138,15 +140,33 @@ public class Main {
         // häufigsten vorkommenden Zahlen.
         System.out.println(
                 "14. Erzeugen Sie 1000 Zufallszahlen von 1 bis 100 und drucken Sie die 3 am häufigsten vorkommenden Zahlen.");
+        Stream.generate(() -> random.nextInt(1, 100))
+                .limit(1000)
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet()
+                .stream()
+                .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))
+                .limit(3)
+                .forEach(e -> System.out.println(e.getKey() + ": " + e.getValue()));
+        System.out.println();
 
         // 15. Erzeugen Sie einen String, der alle Großbuchstaben (A bis Z) enthält.
         // Drucken Sie diesen.
         System.out.println("15. Erzeugen Sie einen String, der alle Großbuchstaben (A bis Z) enthält.");
+        String uppercase = IntStream.rangeClosed('A', 'Z')
+                .mapToObj(c -> Character.toString((char) c))
+                .collect(Collectors.joining());
+        System.out.println(uppercase);
 
         // 16. Erzeugen Sie einen String, der alle Groß- und Kleinbuchstaben enthält.
         // Drucken Sie diesen.
         // Tipp: Nutzen Sie die Methode Character.isAlphabetic().
         System.out.println("16. Erzeugen Sie einen String, der alle Groß- und Kleinbuchstaben enthält.");
+        String letters = IntStream.rangeClosed('A', 'z')
+                .filter(Character::isAlphabetic)
+                .mapToObj(c -> Character.toString((char) c))
+                .collect(Collectors.joining());
+        System.out.println(letters);
 
         // 17. Erzeugen Sie einen 10-stelligen String aus zufälligen Groß- und
         // Kleinbuchstaben.
@@ -168,7 +188,6 @@ public class Main {
 
         // Erstellen Sie einen String-Array mit den Elementen "apple", "banana",
         // "cherry", "date", "elderberry", "fig".
-
         // 21. Erzeugen Sie einen String, der alle Früchte enthält, durch Komma
         // separiert.
         System.out.println("21. Erzeugen Sie einen String, der alle Früchte enthält, durch Komma separiert.");
