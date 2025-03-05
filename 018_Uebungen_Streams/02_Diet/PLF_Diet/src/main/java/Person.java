@@ -27,7 +27,7 @@ public record Person(
                 weight_T1,
                 weight_T2,
                 weight_T2 < weight_T1 ? "-" : "+",
-                Math.abs(weight_T2 - weight_T1));
+                Math.abs(getWeightDifference()));
     }
 
     public boolean hasAborted() {
@@ -64,6 +64,10 @@ public record Person(
         } else {
             return "obese";
         }
+    }
+
+    public double getWeightDifference() {
+        return weight_T2 - weight_T1;
     }
 
 }
