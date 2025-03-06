@@ -240,8 +240,9 @@ public class Main {
         // sind, durch Komma und Leerzeichen getrennt.
         System.out.println(
                 "23. Erzeugen Sie einen Fruchtsalat, in dem die Früchte zufällig angeordnet sind, durch Komma und Leerzeichen getrennt.");
-        String fruitSalad = Stream.of(fruits)
-                .sorted((a, b) -> random.nextInt(-1, 2))
+        String fruitSalad = Stream.generate(() -> fruits[random.nextInt(fruits.length)])
+                .distinct()
+                .limit(fruits.length)
                 .collect(Collectors.joining(", "));
         System.out.println(fruitSalad);
 
