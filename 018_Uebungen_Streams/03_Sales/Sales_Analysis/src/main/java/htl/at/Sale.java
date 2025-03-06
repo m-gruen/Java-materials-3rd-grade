@@ -18,7 +18,7 @@ public record Sale(
     @Override
     public String toString() {
         return "%s %7d %-9s %s %7d %-20s %7d %-12s %4d %8.2f %10.2f %-10s".formatted(
-                Objects.equals(priority, "Next Day") || Objects.equals(priority, "Express") ? "*" : " ",
+                priority.equals("Next Day") || priority.equals("Express") ? "*" : " ",
                 orderID,
                 priority,
                 date,

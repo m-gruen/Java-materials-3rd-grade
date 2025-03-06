@@ -99,7 +99,7 @@ public class Analysis {
         // d) Gab es im Jänner 2024 Verkäufe mit der Zahlungsart "Advance Payment" nach Ungarn?
         boolean pays = sales.stream()
                 .filter(sale -> sale.date().getMonthValue() == 1)
-                .filter(sale -> sale.category().equals("Advance Payment"))
+                .filter(sale -> sale.payment().equals("Advance Payment"))
                 .anyMatch(sale -> sale.country().equals("Hungary"));
 
         System.out.println(pays ? "Ja" : "Nein");
@@ -140,6 +140,7 @@ public class Analysis {
         Stream.generate(() -> sales.get(random.nextInt(sales.size())))
                 .filter(sale -> sale.date().getMonthValue() == 1)
                 .filter(sale -> sale.country().equals("Austria"))
+                .distinct()
                 .limit(10)
                 .sorted(Comparator.comparingDouble(Sale::amount).reversed())
                 .forEach(System.out::println);
