@@ -36,8 +36,4 @@ public record Sale(
         return quantity * pricePerUnit;
     }
 
-
 }
-
-
-
