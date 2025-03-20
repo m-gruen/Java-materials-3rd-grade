@@ -62,10 +62,36 @@ public class ContactRepository {
     }
 
     public void updateContact(Contact contact) {
-        // TODO
+        String sql = """
+                UPDATE Contact
+                SET name = ?,
+                    phone = ?,
+                    address = ?
+                WHERE id = ?
+                """;
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, contact.getName());
+            pstmt.setString(2, contact.getPhone());
+            pstmt.setString(3, contact.getAddress());
+            pstmt.setInt(4, contact.getId());
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void deleteContact(int id) {
-        // TODO
+        String sql = """
+                DELETE FROM Contact
+                WHERE id = ?
+                """;
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
