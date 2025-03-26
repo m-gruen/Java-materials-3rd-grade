@@ -13,6 +13,7 @@ public class ContactPresenter {
 
     private final ContactRepository contactRepository;
     private final ObservableList<Contact> contactList = FXCollections.observableArrayList();
+    private Contact selectedContact;
 
 
     private ContactPresenter(ContactView view) {
@@ -24,7 +25,6 @@ public class ContactPresenter {
         attachEvents();
         addListeners();
         init();
-
     }
 
     private void bindViewToModel() {
