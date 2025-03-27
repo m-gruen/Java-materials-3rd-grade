@@ -61,24 +61,29 @@ public class ContactView {
         hBoxSearch.getChildren().addAll(tfSearchText, btnSearch);
 
         // Contact List
-        lvContacts.setPrefHeight(400);
+        lvContacts.setPrefHeight(600);
 
         // Detail View
         hBoxId.setSpacing(10);
         lblId.setPrefWidth(100);
+        tfId.setPrefWidth(600);
         hBoxId.getChildren().addAll(lblId, tfId);
         tfId.setEditable(false);
+        tfId.setDisable(true);
 
         hBoxName.setSpacing(10);
         lblName.setPrefWidth(100);
+        tfName.setPrefWidth(600);
         hBoxName.getChildren().addAll(lblName, tfName);
 
         hBoxPhone.setSpacing(10);
         lblPhone.setPrefWidth(100);
+        tfPhone.setPrefWidth(600);
         hBoxPhone.getChildren().addAll(lblPhone, tfPhone);
 
         hBoxAddress.setSpacing(10);
         lblAddress.setPrefWidth(100);
+        tfAddress.setPrefWidth(600);
         hBoxAddress.getChildren().addAll(lblAddress, tfAddress);
 
         vBoxDetail.setSpacing(10);
