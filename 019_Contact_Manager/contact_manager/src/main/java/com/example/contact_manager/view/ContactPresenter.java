@@ -114,6 +114,7 @@ public class ContactPresenter {
 
             Contact lastAdded = contactList.getLast();
             view.getLvContacts().getSelectionModel().select(lastAdded);
+            view.getLvContacts().scrollTo(lastAdded);
         } else {
             selectedContact.setName(name);
             selectedContact.setPhone(phone);
@@ -125,6 +126,7 @@ public class ContactPresenter {
             for (Contact c : contactList) {
                 if (c.getId() == selectedContact.getId()) {
                     view.getLvContacts().getSelectionModel().select(c);
+                    view.getLvContacts().scrollTo(c);
                     break;
                 }
             }

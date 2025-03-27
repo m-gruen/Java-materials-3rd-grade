@@ -25,19 +25,19 @@ public class ContactView {
     private final VBox vBoxDetail = new VBox();
 
     private final HBox hBoxId = new HBox();
-    private final Label lblId = new Label("ID");
+    private final Label lblId = new Label("ID:");
     private final TextField tfId = new TextField();
 
     private final HBox hBoxName = new HBox();
-    private final Label lblName = new Label("Name");
+    private final Label lblName = new Label("Name:");
     private final TextField tfName = new TextField();
 
     private final HBox hBoxPhone = new HBox();
-    private final Label lblPhone = new Label("Phone");
+    private final Label lblPhone = new Label("Phone:");
     private final TextField tfPhone = new TextField();
 
     private final HBox hBoxAddress = new HBox();
-    private final Label lblAddress = new Label("Address");
+    private final Label lblAddress = new Label("Address:");
     private final TextField tfAddress = new TextField();
 
     // Important Buttons
