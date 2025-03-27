@@ -1,4 +1,4 @@
-package com.example.contact_manager.modle;
+package com.example.contact_manager.model;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;

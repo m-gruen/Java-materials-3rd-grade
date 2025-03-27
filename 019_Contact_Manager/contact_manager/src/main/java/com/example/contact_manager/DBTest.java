@@ -2,7 +2,7 @@ package com.example.contact_manager;
 
 import com.example.contact_manager.database.ContactRepository;
 import com.example.contact_manager.database.Database;
-import com.example.contact_manager.modle.Contact;
+import com.example.contact_manager.model.Contact;
 
 import java.util.List;
 
