@@ -1,7 +1,7 @@
 package com.example.contact_manager.view;
 
 import com.example.contact_manager.database.ContactRepository;
-import com.example.contact_manager.modle.Contact;
+import com.example.contact_manager.model.Contact;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;

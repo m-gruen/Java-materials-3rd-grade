@@ -1,6 +1,6 @@
 package com.example.contact_manager.view;
 
-import com.example.contact_manager.modle.Contact;
+import com.example.contact_manager.model.Contact;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;

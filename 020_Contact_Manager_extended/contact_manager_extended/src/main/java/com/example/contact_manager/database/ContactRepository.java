@@ -1,6 +1,6 @@
 package com.example.contact_manager.database;
 
-import com.example.contact_manager.modle.Contact;
+import com.example.contact_manager.model.Contact;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
