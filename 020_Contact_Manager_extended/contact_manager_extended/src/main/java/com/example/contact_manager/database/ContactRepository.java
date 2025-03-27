@@ -1,6 +1,7 @@
 package com.example.contact_manager.database;
 
 import com.example.contact_manager.model.Contact;
+import com.example.contact_manager.model.ContactType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -30,7 +31,8 @@ public class ContactRepository {
                                 rs.getInt("id"),
                                 rs.getString("name"),
                                 rs.getString("phone"),
-                                rs.getString("address")
+                                rs.getString("address"),
+                                ContactType.valueOf(rs.getString("contactType"))
                         )
                 );
             }
@@ -40,22 +42,22 @@ public class ContactRepository {
         return contactList;
     }
 
-    public void addContact(String name, String phone, String address) {
+    public void addContact(String name, String phone, String address, ContactType type) {
         String sql = """
                 INSERT INTO Contact (
                        name,
                        phone,
-                       address)
-                VALUES (?, ?, ?)
+                       address,
+                       contactType)
+                VALUES (?, ?, ?, ?)
                 """;
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, name);
             pstmt.setString(2, phone);
             pstmt.setString(3, address);
+            pstmt.setString(4, type.name());
             pstmt.executeUpdate();
-
-            // get auto-generated ID
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -66,7 +68,8 @@ public class ContactRepository {
                 UPDATE Contact
                 SET name = ?,
                     phone = ?,
-                    address = ?
+                    address = ?,
+                    contactType = ?
                 WHERE id = ?
                 """;
 
@@ -74,7 +77,8 @@ public class ContactRepository {
             pstmt.setString(1, contact.getName());
             pstmt.setString(2, contact.getPhone());
             pstmt.setString(3, contact.getAddress());
-            pstmt.setInt(4, contact.getId());
+            pstmt.setString(4, contact.getType().name());
+            pstmt.setInt(5, contact.getId());
             pstmt.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();

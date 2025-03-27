@@ -1,11 +1,9 @@
 package com.example.contact_manager.view;
 
 import com.example.contact_manager.model.Contact;
+import com.example.contact_manager.model.ContactType;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -18,8 +16,8 @@ public class ContactView {
     private final TextField tfSearchText = new TextField();
     private final Button btnSearch = new Button("Search");
 
-    // Contact List
-    private final ListView<Contact> lvContacts = new ListView<>();
+    // Contact Tree
+    private final TreeView<Contact> tvContacts = new TreeView<>();
 
     // Detail View
     private final VBox vBoxDetail = new VBox();
@@ -39,6 +37,10 @@ public class ContactView {
     private final HBox hBoxAddress = new HBox();
     private final Label lblAddress = new Label("Address:");
     private final TextField tfAddress = new TextField();
+
+    private final HBox hBoxType = new HBox();
+    private final Label lblType = new Label("Type:");
+    private final ComboBox<ContactType> cmbContactType = new ComboBox<>();
 
     // Important Buttons
     private final HBox hBoxButtons = new HBox();
@@ -60,8 +62,8 @@ public class ContactView {
         hBoxSearch.setSpacing(10);
         hBoxSearch.getChildren().addAll(tfSearchText, btnSearch);
 
-        // Contact List
-        lvContacts.setPrefHeight(600);
+        // Contact Tree
+        tvContacts.setPrefHeight(600);
 
         // Detail View
         hBoxId.setSpacing(10);
@@ -86,15 +88,23 @@ public class ContactView {
         tfAddress.setPrefWidth(600);
         hBoxAddress.getChildren().addAll(lblAddress, tfAddress);
 
+        hBoxType.setSpacing(10);
+        lblType.setPrefWidth(100);
+        cmbContactType.setPrefWidth(600);
+        hBoxType.getChildren().addAll(lblType, cmbContactType);
+
         vBoxDetail.setSpacing(10);
-        vBoxDetail.getChildren().addAll(hBoxId, hBoxName, hBoxPhone, hBoxAddress);
+        vBoxDetail.getChildren().addAll(hBoxId, hBoxName, hBoxPhone, hBoxAddress, hBoxType);
 
         // Important Buttons
         hBoxButtons.setSpacing(10);
         hBoxButtons.getChildren().addAll(btnNew, btnEdit, btnSave, btnDelete);
 
         // Generate root view
-        root.getChildren().addAll(hBoxSearch, lvContacts, vBoxDetail, hBoxButtons);
+        root.getChildren().addAll(hBoxSearch, tvContacts, vBoxDetail, hBoxButtons);
+
+        // Initialize ComboBox with ContactType values
+        cmbContactType.getItems().addAll(ContactType.values());
     }
 
     public VBox getRoot() {
@@ -109,8 +119,8 @@ public class ContactView {
         return btnSearch;
     }
 
-    public ListView<Contact> getLvContacts() {
-        return lvContacts;
+    public TreeView<Contact> getTvContacts() {
+        return tvContacts;
     }
 
     public TextField getTfId() {
@@ -127,6 +137,10 @@ public class ContactView {
 
     public TextField getTfAddress() {
         return tfAddress;
+    }
+
+    public ComboBox<ContactType> getCmbContactType() {
+        return cmbContactType;
     }
 
     public Button getBtnNew() {
@@ -150,5 +164,6 @@ public class ContactView {
         tfName.clear();
         tfPhone.clear();
         tfAddress.clear();
+        cmbContactType.getSelectionModel().clearSelection();
     }
 }

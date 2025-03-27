@@ -1,9 +1,6 @@
 package com.example.contact_manager.model;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 
 public class Contact {
 
@@ -11,24 +8,27 @@ public class Contact {
     private StringProperty name = new SimpleStringProperty();
     private StringProperty phone = new SimpleStringProperty();
     private StringProperty address = new SimpleStringProperty();
+    private ObjectProperty<ContactType> type = new SimpleObjectProperty<>();
 
     public Contact() {
     }
 
-    public Contact(int id, String name, String phone, String address) {
+    public Contact(int id, String name, String phone, String address, ContactType type) {
         setId(id);
         setName(name);
         setPhone(phone);
         setAddress(address);
+        setType(type);
     }
 
     @Override
     public String toString() {
-        return "%d: %s (%s, %s)".formatted(
+        return "%d: %s (%s, %s, %s)".formatted(
                 id.get(),
                 name.get(),
                 phone.get(),
-                address.get()
+                address.get(),
+                type.get()
         );
     }
 
@@ -79,5 +79,17 @@ public class Contact {
 
     public void setAddress(String address) {
         this.address.set(address);
+    }
+
+    public ContactType getType() {
+        return type.get();
+    }
+
+    public ObjectProperty<ContactType> typeProperty() {
+        return type;
+    }
+
+    public void setType(ContactType type) {
+        this.type.set(type);
     }
 }

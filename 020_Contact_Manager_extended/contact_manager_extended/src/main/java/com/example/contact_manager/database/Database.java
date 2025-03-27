@@ -12,7 +12,7 @@ public class Database {
     private static final String USERNAME = "sa";
     private static final String PASSWORD = "";
 
-    private  static Connection connection;
+    private static Connection connection;
 
     private Database() {
         try {
@@ -44,7 +44,8 @@ public class Database {
                     id INT PRIMARY KEY AUTO_INCREMENT,
                     name VARCHAR(255) NOT NULL,
                     phone VARCHAR(255),
-                    address VARCHAR(255)
+                    address VARCHAR(255),
+                    contactType VARCHAR(255)
                 )
                 """;
 
