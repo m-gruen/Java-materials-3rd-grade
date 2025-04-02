@@ -17,7 +17,7 @@ public class ContactView {
     private final Button btnSearch = new Button("Search");
 
     // Contact Tree
-    private final TreeView<Contact> tvContacts = new TreeView<>();
+    private final TreeView<Object> tvContacts = new TreeView<>();
 
     // Detail View
     private final VBox vBoxDetail = new VBox();
@@ -119,7 +119,7 @@ public class ContactView {
         return btnSearch;
     }
 
-    public TreeView<Contact> getTvContacts() {
+    public TreeView<Object> getTvContacts() {
         return tvContacts;
     }
 

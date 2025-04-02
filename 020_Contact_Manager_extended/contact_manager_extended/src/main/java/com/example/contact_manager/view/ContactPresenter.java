@@ -6,6 +6,7 @@ import com.example.contact_manager.model.ContactType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
+import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.stage.Stage;
 
@@ -24,14 +25,10 @@ public class ContactPresenter {
     private ContactPresenter(ContactView view) {
         this.view = view;
         this.contactRepository = new ContactRepository();
-        bindViewToModel();
+        setFieldsEditable(false);
         attachEvents();
         addListeners();
         init();
-    }
-
-    private void bindViewToModel() {
-        setFieldsEditable(false);
     }
 
     private void attachEvents() {
@@ -43,55 +40,46 @@ public class ContactPresenter {
     }
 
     private void addListeners() {
-        view.getTvContacts().getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> {
-                    if (newValue != null && newValue.getValue() != null) {
-                        Contact contact = newValue.getValue();
+        view.getTvContacts().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null && newValue.getValue() instanceof Contact) {
+                Contact contact = (Contact) newValue.getValue();
 
-                        if (contact.getId() == -1) {
-                            view.clearFields();
-                            return;
-                        }
+                selectedContact = contact;
+                isNewContact = false;
+                view.getTfId().setText(String.valueOf(contact.getId()));
+                view.getTfName().setText(contact.getName());
+                view.getTfPhone().setText(contact.getPhone());
+                view.getTfAddress().setText(contact.getAddress());
+                view.getCmbContactType().setValue(contact.getType());
 
-                        selectedContact = contact;
-                        isNewContact = false;
-                        view.getTfId().setText(String.valueOf(selectedContact.getId()));
-                        view.getTfName().setText(selectedContact.getName());
-                        view.getTfPhone().setText(selectedContact.getPhone());
-                        view.getTfAddress().setText(selectedContact.getAddress());
-                        view.getCmbContactType().setValue(selectedContact.getType());
-                        setFieldsEditable(false);
-                    } else {
-                        view.clearFields();
-                    }
-                });
+                setFieldsEditable(false);
+            } else {
+                view.clearFields();
+            }
+        });
     }
 
     private void init() {
         reloadContacts();
-        buildTreeView();
     }
 
     private void reloadContacts() {
         contactList.clear();
         contactList.addAll(contactRepository.getAllContacts());
+        buildTreeView();
     }
 
     private void searchContact() {
         String searchText = view.getTfSearchText().getText().toLowerCase();
-        if (searchText.isEmpty()) return;
+        TreeItem<Object> root = view.getTvContacts().getRoot();
 
-        TreeItem<Contact> root = view.getTvContacts().getRoot();
-        if (root == null) return;
+        for (TreeItem<Object> typeNode : root.getChildren()) {
+            for (TreeItem<Object> contactNode : typeNode.getChildren()) {
+                Contact contact = (Contact) contactNode.getValue();
 
-        for (TreeItem<Contact> typeNode : root.getChildren()) {
-            for (TreeItem<Contact> contactNode : typeNode.getChildren()) {
-                Contact contact = contactNode.getValue();
                 if (contact.getName().toLowerCase().contains(searchText)) {
                     view.getTvContacts().getSelectionModel().select(contactNode);
-                    view.getTvContacts().scrollTo(
-                            view.getTvContacts().getRow(contactNode)
-                    );
+                    view.getTvContacts().scrollTo(view.getTvContacts().getRow(contactNode));
                     return;
                 }
             }
@@ -123,18 +111,15 @@ public class ContactPresenter {
 
         if (isNewContact) {
             contactRepository.addContact(name, phone, address, type);
-            reloadContacts();
-            buildTreeView();
         } else {
             selectedContact.setName(name);
             selectedContact.setPhone(phone);
             selectedContact.setAddress(address);
             selectedContact.setType(type);
             contactRepository.updateContact(selectedContact);
-            reloadContacts();
-            buildTreeView();
         }
 
+        reloadContacts();
         setFieldsEditable(false);
         isNewContact = false;
     }
@@ -143,7 +128,6 @@ public class ContactPresenter {
         if (selectedContact != null) {
             contactRepository.deleteContact(selectedContact.getId());
             reloadContacts();
-            buildTreeView();
             view.getTvContacts().getSelectionModel().clearSelection();
             view.clearFields();
         }
@@ -158,45 +142,20 @@ public class ContactPresenter {
     }
 
     private void buildTreeView() {
-        TreeItem<Contact> root = new TreeItem<>();
-
+        TreeItem<Object> root = new TreeItem<>(null);
         Map<ContactType, List<Contact>> contactsByType = contactList.stream()
-                .collect(Collectors.groupingBy(c -> c.getType() != null ? c.getType() : ContactType.NONE));
-
+                .collect(Collectors.groupingBy(Contact::getType));
         contactsByType.forEach((type, contacts) -> {
-            Contact typeContact = new Contact();
-            typeContact.setId(-1);
-            typeContact.setName(type.toString());
-            typeContact.setType(type);
-
-            TreeItem<Contact> typeNode = new TreeItem<>(typeContact);
-
+            TreeItem<Object> typeNode = new TreeItem<>(type);
             contacts.forEach(contact -> {
-                TreeItem<Contact> contactNode = new TreeItem<>(contact);
+                TreeItem<Object> contactNode = new TreeItem<>(contact);
                 typeNode.getChildren().add(contactNode);
             });
-
             typeNode.setExpanded(true);
             root.getChildren().add(typeNode);
         });
-
         view.getTvContacts().setRoot(root);
         view.getTvContacts().setShowRoot(false);
-
-        view.getTvContacts().setCellFactory(tv -> new javafx.scene.control.TreeCell<>() {
-            @Override
-            protected void updateItem(Contact contact, boolean empty) {
-                super.updateItem(contact, empty);
-
-                if (empty || contact == null) {
-                    setText(null);
-                } else if (contact.getId() == -1) {
-                    setText(contact.getName());
-                } else {
-                    setText(contact.getName());
-                }
-            }
-        });
     }
 
     public static void show(Stage stage) {
