@@ -2,6 +2,7 @@ package com.example.contact_manager.view;
 
 import com.example.contact_manager.model.Contact;
 import com.example.contact_manager.model.ContactType;
+import com.example.contact_manager.model.Location;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -37,6 +38,10 @@ public class ContactView {
     private final HBox hBoxAddress = new HBox();
     private final Label lblAddress = new Label("Address:");
     private final TextField tfAddress = new TextField();
+
+    private final HBox hBoxLocation = new HBox();
+    private final Label lblLocation = new Label("Location:");
+    private final ComboBox<Location> cmbLocation = new ComboBox<>();
 
     private final HBox hBoxType = new HBox();
     private final Label lblType = new Label("Type:");
@@ -88,13 +93,18 @@ public class ContactView {
         tfAddress.setPrefWidth(600);
         hBoxAddress.getChildren().addAll(lblAddress, tfAddress);
 
+        hBoxLocation.setSpacing(10);
+        lblLocation.setPrefWidth(100);
+        cmbLocation.setPrefWidth(600);
+        hBoxLocation.getChildren().addAll(lblLocation, cmbLocation);
+
         hBoxType.setSpacing(10);
         lblType.setPrefWidth(100);
         cmbContactType.setPrefWidth(600);
         hBoxType.getChildren().addAll(lblType, cmbContactType);
 
         vBoxDetail.setSpacing(10);
-        vBoxDetail.getChildren().addAll(hBoxId, hBoxName, hBoxPhone, hBoxAddress, hBoxType);
+        vBoxDetail.getChildren().addAll(hBoxId, hBoxName, hBoxPhone, hBoxAddress, hBoxLocation, hBoxType);
 
         // Important Buttons
         hBoxButtons.setSpacing(10);
@@ -143,6 +153,10 @@ public class ContactView {
         return cmbContactType;
     }
 
+    public ComboBox<Location> getCmbLocation() {
+        return cmbLocation;
+    }
+
     public Button getBtnNew() {
         return btnNew;
     }
@@ -165,5 +179,6 @@ public class ContactView {
         tfPhone.clear();
         tfAddress.clear();
         cmbContactType.getSelectionModel().clearSelection();
+        cmbLocation.getSelectionModel().clearSelection();
     }
 }

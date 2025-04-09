@@ -1,12 +1,13 @@
 package com.example.contact_manager.view;
 
 import com.example.contact_manager.database.ContactRepository;
+import com.example.contact_manager.database.LocationRepository;
 import com.example.contact_manager.model.Contact;
 import com.example.contact_manager.model.ContactType;
+import com.example.contact_manager.model.Location;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
-import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.stage.Stage;
 
@@ -18,17 +19,27 @@ public class ContactPresenter {
 
     private final ContactView view;
     private final ContactRepository contactRepository;
+    private final LocationRepository locationRepository;
     private final ObservableList<Contact> contactList = FXCollections.observableArrayList();
+    private final ObservableList<Location> locationList = FXCollections.observableArrayList();
     private Contact selectedContact;
     private boolean isNewContact = false;
 
     private ContactPresenter(ContactView view) {
         this.view = view;
         this.contactRepository = new ContactRepository();
+        this.locationRepository = new LocationRepository();
         setFieldsEditable(false);
+        loadLocations();
         attachEvents();
         addListeners();
         init();
+    }
+
+    private void loadLocations() {
+        locationList.clear();
+        locationList.addAll(locationRepository.getAllLocations());
+        view.getCmbLocation().setItems(locationList);
     }
 
     private void attachEvents() {
@@ -51,6 +62,7 @@ public class ContactPresenter {
                 view.getTfPhone().setText(contact.getPhone());
                 view.getTfAddress().setText(contact.getAddress());
                 view.getCmbContactType().setValue(contact.getType());
+                view.getCmbLocation().setValue(contact.getLocation());
 
                 setFieldsEditable(false);
             } else {
@@ -108,14 +120,17 @@ public class ContactPresenter {
         String phone = view.getTfPhone().getText();
         String address = view.getTfAddress().getText();
         ContactType type = view.getCmbContactType().getValue();
+        Location location = view.getCmbLocation().getValue();
+        String plz = location != null ? location.getPlz() : null;
 
         if (isNewContact) {
-            contactRepository.addContact(name, phone, address, type);
+            contactRepository.addContact(name, phone, address, type, plz);
         } else {
             selectedContact.setName(name);
             selectedContact.setPhone(phone);
             selectedContact.setAddress(address);
             selectedContact.setType(type);
+            selectedContact.setLocation(location);
             contactRepository.updateContact(selectedContact);
         }
 
@@ -138,6 +153,7 @@ public class ContactPresenter {
         view.getTfPhone().setEditable(editable);
         view.getTfAddress().setEditable(editable);
         view.getCmbContactType().setDisable(!editable);
+        view.getCmbLocation().setDisable(!editable);
         view.getBtnSave().setDisable(!editable);
     }
 
