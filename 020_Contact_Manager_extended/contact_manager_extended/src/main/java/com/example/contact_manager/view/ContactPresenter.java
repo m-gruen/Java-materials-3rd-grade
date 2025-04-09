@@ -32,11 +32,11 @@ public class ContactPresenter {
     }
 
     private void attachEvents() {
-        view.getBtnSearch().setOnAction(event -> searchContact());
-        view.getBtnNew().setOnAction(event -> newContact());
-        view.getBtnEdit().setOnAction(event -> editContact());
-        view.getBtnSave().setOnAction(event -> saveContact());
-        view.getBtnDelete().setOnAction(event -> deleteContact());
+        view.getBtnSearch().setOnAction(_ -> searchContact());
+        view.getBtnNew().setOnAction(_ -> newContact());
+        view.getBtnEdit().setOnAction(_ -> editContact());
+        view.getBtnSave().setOnAction(_ -> saveContact());
+        view.getBtnDelete().setOnAction(_ -> deleteContact());
     }
 
     private void addListeners() {
