@@ -68,22 +68,22 @@ public class ContactRepository {
 
     public void updateContact(Contact contact) {
         String sql = """
-                UPDATE Contact
-                SET name = ?,
-                    phone = ?,
-                    address = ?,
-                    contactType = ?,
-                    plz = ?
-                WHERE id = ?
-                """;
+            UPDATE Contact
+            SET name = ?,
+                phone = ?,
+                address = ?,
+                contactType = ?,
+                plz = ?
+            WHERE id = ?
+            """;
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, contact.getName());
             pstmt.setString(2, contact.getPhone());
             pstmt.setString(3, contact.getAddress());
             pstmt.setString(4, contact.getType().name());
-            pstmt.setInt(5, contact.getId());
-            pstmt.setString(6, contact.getLocation() != null ? contact.getLocation().getPlz() : null);
+            pstmt.setString(5, contact.getLocation() != null ? contact.getLocation().getPlz() : null);
+            pstmt.setInt(6, contact.getId());
             pstmt.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
