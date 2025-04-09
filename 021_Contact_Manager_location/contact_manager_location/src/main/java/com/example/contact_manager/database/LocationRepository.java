@@ -63,7 +63,7 @@ public class LocationRepository {
 
     public void addLocation(String plz, String city) {
         String sql = """
-                INSERT INTO Location (
+                MERGE INTO Location (
                        plz,
                        city)
                 VALUES (?, ?)
