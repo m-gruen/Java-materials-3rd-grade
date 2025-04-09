@@ -32,7 +32,8 @@ public class ContactRepository {
                                 rs.getString("name"),
                                 rs.getString("phone"),
                                 rs.getString("address"),
-                                ContactType.valueOf(rs.getString("contactType"))
+                                ContactType.valueOf(rs.getString("contactType")),
+                                rs.getString("plz") != null ? new LocationRepository().getLocationByPlz(rs.getString("plz")) : null
                         )
                 );
             }
@@ -42,14 +43,15 @@ public class ContactRepository {
         return contactList;
     }
 
-    public void addContact(String name, String phone, String address, ContactType type) {
+    public void addContact(String name, String phone, String address, ContactType type, String plz) {
         String sql = """
                 INSERT INTO Contact (
                        name,
                        phone,
                        address,
-                       contactType)
-                VALUES (?, ?, ?, ?)
+                       contactType,
+                       plz)
+                VALUES (?, ?, ?, ?, ?)
                 """;
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -57,6 +59,7 @@ public class ContactRepository {
             pstmt.setString(2, phone);
             pstmt.setString(3, address);
             pstmt.setString(4, type.name());
+            pstmt.setString(5, plz);
             pstmt.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,7 +72,8 @@ public class ContactRepository {
                 SET name = ?,
                     phone = ?,
                     address = ?,
-                    contactType = ?
+                    contactType = ?,
+                    plz = ?
                 WHERE id = ?
                 """;
 
@@ -79,6 +83,7 @@ public class ContactRepository {
             pstmt.setString(3, contact.getAddress());
             pstmt.setString(4, contact.getType().name());
             pstmt.setInt(5, contact.getId());
+            pstmt.setString(6, contact.getLocation() != null ? contact.getLocation().getPlz() : null);
             pstmt.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();

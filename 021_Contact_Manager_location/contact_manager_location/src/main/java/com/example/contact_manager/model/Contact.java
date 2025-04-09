@@ -3,12 +3,12 @@ package com.example.contact_manager.model;
 import javafx.beans.property.*;
 
 public class Contact {
-
     private IntegerProperty id = new SimpleIntegerProperty();
     private StringProperty name = new SimpleStringProperty();
     private StringProperty phone = new SimpleStringProperty();
     private StringProperty address = new SimpleStringProperty();
     private ObjectProperty<ContactType> type = new SimpleObjectProperty<>();
+    private ObjectProperty<Location> location = new SimpleObjectProperty<>();
 
     public Contact() {
     }
@@ -21,14 +21,24 @@ public class Contact {
         setType(type);
     }
 
+    public Contact(int id, String name, String phone, String address, ContactType type, Location location) {
+        setId(id);
+        setName(name);
+        setPhone(phone);
+        setAddress(address);
+        setType(type);
+        setLocation(location);
+    }
+
     @Override
     public String toString() {
-        return "%d: %s (%s, %s, %s)".formatted(
+        return "%d: %s (%s, %s, %s, %s)".formatted(
                 id.get(),
                 name.get(),
                 phone.get(),
                 address.get(),
-                type.get()
+                type.get(),
+                location.get() != null ? location.get().toString() : "no location"
         );
     }
 
@@ -91,5 +101,17 @@ public class Contact {
 
     public void setType(ContactType type) {
         this.type.set(type);
+    }
+
+    public Location getLocation() {
+        return location.get();
+    }
+
+    public ObjectProperty<Location> locationProperty() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location.set(location);
     }
 }

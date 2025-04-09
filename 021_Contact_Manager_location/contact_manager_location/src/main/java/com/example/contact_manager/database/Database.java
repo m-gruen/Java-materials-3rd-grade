@@ -45,11 +45,22 @@ public class Database {
                     name VARCHAR(255) NOT NULL,
                     phone VARCHAR(255),
                     address VARCHAR(255),
-                    contactType VARCHAR(255)
+                    contactType VARCHAR(255),
+                    plz VARCHAR(255),
+                    CONSTRAINT fk_location
+                        FOREIGN KEY (plz)
+                        REFERENCES Location(plz) ON DELETE CASCADE
+                )
+                """;
+        String createLocationTable = """
+                CREATE TABLE IF NOT EXISTS Location(
+                    plz VARCHAR(255) PRIMARY KEY,
+                    city VARCHAR(255) NOT NULL
                 )
                 """;
 
         try (Statement statement = connection.createStatement()) {
+            statement.execute(createLocationTable);
             statement.execute(createContactTable);
         } catch (SQLException e) {
             e.printStackTrace();
