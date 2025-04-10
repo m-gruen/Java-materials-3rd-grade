@@ -178,7 +178,7 @@ public class ContactView {
         tfName.clear();
         tfPhone.clear();
         tfAddress.clear();
-        cmbContactType.getSelectionModel().clearSelection();
-        cmbLocation.getSelectionModel().clearSelection();
+        cmbContactType.setValue(null);
+        cmbLocation.setValue(null);
     }
 }

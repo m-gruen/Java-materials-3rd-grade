@@ -32,12 +32,11 @@ public class Contact {
 
     @Override
     public String toString() {
-        return "%d: %s (%s, %s, %s, %s)".formatted(
+        return "%d: %s (%s, %s, %s)".formatted(
                 id.get(),
                 name.get(),
                 phone.get(),
                 address.get(),
-                type.get(),
                 location.get() != null ? location.get().toString() : "no location"
         );
     }
