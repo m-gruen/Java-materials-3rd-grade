@@ -160,7 +160,15 @@ public class StudentRepository {
         }
     }
 
-    public void enrollStudentInCourse(int studentId, String courseId) {
+    /**
+     * Enrolls a student in a course by adding an entry to the CoursesOfStudents
+     * table
+     * 
+     * @param studentId The ID of the student
+     * @param courseId  The ID of the course
+     * @return True if the enrollment was successful, false otherwise
+     */
+    public boolean enrollStudentInCourse(int studentId, String courseId) {
         String sql = """
                 INSERT INTO CoursesOfStudents (
                        StudentID,
@@ -171,13 +179,23 @@ public class StudentRepository {
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, studentId);
             pstmt.setString(2, courseId);
-            pstmt.executeUpdate();
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
 
-    public void removeStudentFromCourse(int studentId, String courseId) {
+    /**
+     * Removes a student from a course by deleting the entry from the
+     * CoursesOfStudents table
+     * 
+     * @param studentId The ID of the student
+     * @param courseId  The ID of the course
+     * @return True if the removal was successful, false otherwise
+     */
+    public boolean removeStudentFromCourse(int studentId, String courseId) {
         String sql = """
                 DELETE FROM CoursesOfStudents
                 WHERE StudentID = ? AND CourseID = ?
@@ -186,9 +204,11 @@ public class StudentRepository {
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, studentId);
             pstmt.setString(2, courseId);
-            pstmt.executeUpdate();
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
 }

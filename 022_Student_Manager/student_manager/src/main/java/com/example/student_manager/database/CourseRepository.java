@@ -89,7 +89,7 @@ public class CourseRepository {
 
     public void addCourse(String id, String name) {
         String sql = """
-                INSERT INTO Course (
+                MERGE INTO Course (
                        ID,
                        Name)
                 VALUES (?, ?)
