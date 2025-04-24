@@ -163,6 +163,7 @@ public class StudentRepository {
     /**
      * Enrolls a student in a course by adding an entry to the CoursesOfStudents
      * table
+     * Uses MERGE INTO to handle duplicates gracefully
      * 
      * @param studentId The ID of the student
      * @param courseId  The ID of the course
@@ -170,9 +171,7 @@ public class StudentRepository {
      */
     public boolean enrollStudentInCourse(int studentId, String courseId) {
         String sql = """
-                INSERT INTO CoursesOfStudents (
-                       StudentID,
-                       CourseID)
+                MERGE INTO CoursesOfStudents KEY(StudentID, CourseID)
                 VALUES (?, ?)
                 """;
 
@@ -180,7 +179,7 @@ public class StudentRepository {
             pstmt.setInt(1, studentId);
             pstmt.setString(2, courseId);
             int rowsAffected = pstmt.executeUpdate();
-            return rowsAffected > 0;
+            return true; // MERGE always succeeds, even if no insert was performed
         } catch (Exception e) {
             e.printStackTrace();
             return false;

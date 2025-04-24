@@ -11,6 +11,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StudentPresenter {
 
     private final StudentView view;
@@ -19,6 +22,7 @@ public class StudentPresenter {
     private final CourseRepository courseRepository;
     private final ObservableList<Student> studentList = FXCollections.observableArrayList();
     private final ObservableList<Course> availableCoursesList = FXCollections.observableArrayList();
+    private final ObservableList<Course> tempSelectedCourses = FXCollections.observableArrayList(); // For new students
     private Student selectedStudent;
     private boolean isNewStudent = false;
 
@@ -89,7 +93,11 @@ public class StudentPresenter {
     }
 
     private void refreshEnrolledCoursesList() {
-        if (selectedStudent != null) {
+        if (isNewStudent) {
+            // For new students, show temp courses list
+            view.getLvEnrolledCourses().setItems(tempSelectedCourses);
+        } else if (selectedStudent != null) {
+            // For existing students, show courses from the student object
             ObservableList<Course> enrolledCourses = FXCollections.observableArrayList(selectedStudent.getCourses());
             view.getLvEnrolledCourses().setItems(enrolledCourses);
         } else {
@@ -102,9 +110,12 @@ public class StudentPresenter {
         availableCoursesList.clear();
         availableCoursesList.addAll(courseRepository.getAllCourses());
 
-        // If student is selected, remove already enrolled courses from the available
-        // list
-        if (selectedStudent != null && !selectedStudent.getCourses().isEmpty()) {
+        // If new student, remove temp selected courses from available list
+        if (isNewStudent && !tempSelectedCourses.isEmpty()) {
+            availableCoursesList.removeAll(tempSelectedCourses);
+        }
+        // If existing student, remove already enrolled courses from the available list
+        else if (selectedStudent != null && !selectedStudent.getCourses().isEmpty()) {
             availableCoursesList.removeAll(selectedStudent.getCourses());
         }
     }
@@ -141,8 +152,16 @@ public class StudentPresenter {
         selectedStudent = new Student();
         isNewStudent = true;
 
+        // Clear any previously selected courses in case of multiple new student
+        // operations
+        tempSelectedCourses.clear();
+
+        // Update the ListView to reflect the empty selection
+        refreshEnrolledCoursesList();
+
         setFieldsEditable(true);
-        setCourseControlsEnabled(false); // Can't add courses until student is saved
+        setCourseControlsEnabled(true); // Enable course selection for new student
+        refreshAvailableCourses(); // Load all available courses
     }
 
     private void editStudent() {
@@ -161,6 +180,7 @@ public class StudentPresenter {
             refreshEnrolledCoursesList();
         } else {
             view.clearFields();
+            tempSelectedCourses.clear(); // Clear temp courses if creating a new student
         }
 
         setFieldsEditable(false);
@@ -179,14 +199,31 @@ public class StudentPresenter {
         String lastName = view.getTfLastName().getText();
 
         if (isNewStudent) {
+            // Store temp courses for later
+            List<Course> coursesToAdd = new ArrayList<>(tempSelectedCourses);
+
+            // Save the new student first
             studentRepository.addStudent(firstName, lastName);
+
+            // Reload students to get the newly created student with ID
             reloadStudents();
 
-            Student lastAdded = studentList.isEmpty() ? null : studentList.get(studentList.size() - 1);
-            if (lastAdded != null) {
-                view.getTvStudents().getSelectionModel().select(lastAdded);
-                view.getTvStudents().scrollTo(lastAdded);
+            // Find the newly created student (should be the last one)
+            Student newlyCreatedStudent = studentList.isEmpty() ? null : studentList.get(studentList.size() - 1);
+
+            if (newlyCreatedStudent != null) {
+                // Add the previously selected courses to the student
+                for (Course course : coursesToAdd) {
+                    studentRepository.enrollStudentInCourse(newlyCreatedStudent.getId(), course.getId());
+                    newlyCreatedStudent.getCourses().add(course);
+                }
+
+                view.getTvStudents().getSelectionModel().select(newlyCreatedStudent);
+                view.getTvStudents().scrollTo(newlyCreatedStudent);
             }
+
+            // Clear the temp list
+            tempSelectedCourses.clear();
         } else {
             selectedStudent.setFirstName(firstName);
             selectedStudent.setLastName(lastName);
@@ -220,58 +257,79 @@ public class StudentPresenter {
     }
 
     private void addCourseToStudent() {
-        if (selectedStudent == null || view.getCbAvailableCourses().getSelectionModel().isEmpty()) {
+        if (view.getCbAvailableCourses().getSelectionModel().isEmpty()) {
             return;
         }
 
         Course selectedCourse = view.getCbAvailableCourses().getSelectionModel().getSelectedItem();
 
         if (selectedCourse != null) {
-            // Add the course to the student in the database
-            boolean success = studentRepository.enrollStudentInCourse(
-                    selectedStudent.getId(), selectedCourse.getId());
+            if (isNewStudent) {
+                // For new students, just add to the temp list
+                tempSelectedCourses.add(selectedCourse);
 
-            if (success) {
-                // Add to the student's course list in the model
-                selectedStudent.getCourses().add(selectedCourse);
-
-                // Refresh the UI
+                // Update the UI
                 refreshEnrolledCoursesList();
                 refreshAvailableCourses();
 
                 // Clear the selection
                 view.getCbAvailableCourses().getSelectionModel().clearSelection();
-            } else {
-                showAlert("Enrollment Error",
-                        "Could not enroll student in the selected course.",
-                        AlertType.ERROR);
+            } else if (selectedStudent != null) {
+                // For existing students, add to database and student object
+                boolean success = studentRepository.enrollStudentInCourse(
+                        selectedStudent.getId(), selectedCourse.getId());
+
+                if (success) {
+                    // Add to the student's course list in the model
+                    selectedStudent.getCourses().add(selectedCourse);
+
+                    // Refresh the UI
+                    refreshEnrolledCoursesList();
+                    refreshAvailableCourses();
+
+                    // Clear the selection
+                    view.getCbAvailableCourses().getSelectionModel().clearSelection();
+                } else {
+                    showAlert("Enrollment Error",
+                            "Could not enroll student in the selected course.",
+                            AlertType.ERROR);
+                }
             }
         }
     }
 
     private void removeCourseFromStudent() {
-        if (selectedStudent == null || view.getLvEnrolledCourses().getSelectionModel().isEmpty()) {
+        if (view.getLvEnrolledCourses().getSelectionModel().isEmpty()) {
             return;
         }
 
         Course selectedCourse = view.getLvEnrolledCourses().getSelectionModel().getSelectedItem();
 
         if (selectedCourse != null) {
-            // Remove the course from the student in the database
-            boolean success = studentRepository.removeStudentFromCourse(
-                    selectedStudent.getId(), selectedCourse.getId());
+            if (isNewStudent) {
+                // For new students, just remove from the temp list
+                tempSelectedCourses.remove(selectedCourse);
 
-            if (success) {
-                // Remove from the student's course list in the model
-                selectedStudent.getCourses().remove(selectedCourse);
-
-                // Refresh the UI
+                // Update the UI
                 refreshEnrolledCoursesList();
                 refreshAvailableCourses();
-            } else {
-                showAlert("Removal Error",
-                        "Could not remove student from the selected course.",
-                        AlertType.ERROR);
+            } else if (selectedStudent != null) {
+                // For existing students, remove from database and student object
+                boolean success = studentRepository.removeStudentFromCourse(
+                        selectedStudent.getId(), selectedCourse.getId());
+
+                if (success) {
+                    // Remove from the student's course list in the model
+                    selectedStudent.getCourses().remove(selectedCourse);
+
+                    // Refresh the UI
+                    refreshEnrolledCoursesList();
+                    refreshAvailableCourses();
+                } else {
+                    showAlert("Removal Error",
+                            "Could not remove student from the selected course.",
+                            AlertType.ERROR);
+                }
             }
         }
     }

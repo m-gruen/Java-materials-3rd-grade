@@ -125,7 +125,7 @@ public class StudentView {
         vBoxDetail.getChildren().add(lblDetailHeader);
 
         // Make labels wider and text fields bigger
-        int labelWidth = 150;
+        int labelWidth = 200;
         int fieldWidth = 600; // Bigger fields
 
         hBoxId.setSpacing(15);
