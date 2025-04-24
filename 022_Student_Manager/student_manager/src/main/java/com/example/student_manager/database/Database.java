@@ -73,6 +73,11 @@ public class Database {
         }
     }
 
+    public void initializeCourseData() {
+        CourseInitializer courseInitializer = new CourseInitializer();
+        courseInitializer.populateCourses();
+    }
+
     public void closeConnection() {
         if (connection != null) {
             try {
